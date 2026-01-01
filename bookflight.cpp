@@ -3,11 +3,28 @@
 #include <vector>
 #include <ctime>
 using namespace std;
+
+# pragma region functions
+
 void printTitle() { // to avoid having to manually replace \033c when i'm on windows
   cout << "\033c";
   cout << "******************* LISHA'S AMAZING AIRPORT *******************\n";  
 }
+bool flightExists(vector<string> FlightIDs, string id) {
+  for (string ID : FlightIDs) {
+    if(id == ID) return true;
+  }
 
+  return false;
+}
+bool validCity(vector<string> Cities, string city) {
+  for(string CITY : Cities) {
+    if(city == CITY) return true;
+  }
+  return false;
+}
+
+#pragma endregion
 
 class Flights {
   string ID, City1, City2;
@@ -24,8 +41,46 @@ public:
     generateFlight(); 
   }
   void generateFlight();
-};
 
+  void book(string how) {
+    if(how == "City") {
+      printTitle();
+      do {
+        cout << "Which city are you departing from? ";
+        cin >> City1;
+      } while(validCity(Cities, City1));
+
+      printTitle();
+      cout << "City of Departure: " << City1 << "\n\n";
+
+      ifstream flights("flights.txt");
+      cin.ignore();
+      
+      while(getline(flights, ID, '|')) {
+        flights.seekg(1, ios::cur); // moves cursor ahead by 1 char
+
+        string tempCity1;
+        getline(flights, tempCity1, '-'); flights.seekg(1, ios::cur);
+
+        getline(flights, City2, '|'); flights.seekg(1, ios::cur);
+
+        string tempSeats;
+        getline(flights, tempSeats, '/');
+        takenSeats = stoi(tempSeats);
+        getline(flights, tempSeats);
+        totalSeats = stoi(tempSeats);
+
+        if(tempCity1 == City1) {
+          cout << "Flight " << ID << "\n";
+          cout << City1 << " -> " << City2 << "\n";
+          cout << "Seats available: " << totalSeats-takenSeats << "/" << totalSeats;
+        }
+      }
+
+      flights.close();
+    }
+  }
+};
 
 int main() {
   srand(time(0));
@@ -44,13 +99,34 @@ int main() {
     switch(choice) {
       case 0: exit(0); 
 
-      case 1: 
+      case 1: {
+        printTitle();
+        bool validChoice = true;
+        
+        while(validChoice) {
+          int choice;
+          cout << "\n0. Go back";
+          cout << "\n1. Choose from City Route";
+          cout << "\n2. Choose from Flight Number";
+          cout << "\nHow would you like to book? ";
+          cin >> choice;
+        }
 
+        switch(choice) {
+          case 0: break;
+
+          case 1: flight.book("City"); break;
+
+          case 2: break;
+
+          default: cout << "\nInvalid choice";
+        }
         break;
+      }
       
       case 2: break;
 
-      default: cout << "Invalid choice.\n"; break;
+      default: printTitle(); cout << "\nInvalid choice.\n"; break;
     }
   }
   
@@ -59,34 +135,25 @@ int main() {
 }
 
 // functions 
-bool flightExists(vector<string> FlightIDs, string id) {
-  for (string ID : FlightIDs) {
-    if(id == ID) return true;
-  }
-
-  return false;
-}
-
 void Flights::generateFlight() {
-  Flights flight;
   do {
     char letter = rand() % 26 + 65; //uppercase letter
     int number = rand() % 1000;
 
-    flight.ID = letter + to_string(number);
-  } while(flightExists(FlightIDs, flight.ID));
+    ID = letter + to_string(number);
+  } while(flightExists(FlightIDs, ID));
 
-  flight.City1 = Cities[rand() % Cities.size()];
+  City1 = Cities[rand() % Cities.size()];
   do {
-    flight.City2 = Cities[rand() % Cities.size()];
-  } while(flight.City1 == flight.City2);
+    City2 = Cities[rand() % Cities.size()];
+  } while(City1 == City2);
 
-  flight.totalSeats = rand() % 15 + 1;
-  flight.takenSeats = rand() % flight.totalSeats;
+  totalSeats = rand() % 15 + 1;
+  takenSeats = rand() % totalSeats;
 
   ofstream flights("flights.txt", ios::app);
 
-  flights << flight.ID << "||" << flight.City1 << "->" << flight.City2 << "||" << flight.takenSeats << "/" << flight.totalSeats<<endl;
+  flights << ID << "||" << City1 << "->" << City2 << "||" << takenSeats << "/" << totalSeats<<endl;
 
   flights.close();
 }
