@@ -4,18 +4,17 @@
 #include <ctime>
 using namespace std;
 
-struct Flight {
+
+class Flights {
   string ID, City1, City2;
   int takenSeats, totalSeats;
-};
 
-class Airport {
   vector<string> FlightIDs = {};
   vector<string> Cities = {"Mumbai", "Delhi", "New York", "Rome", "Paris"};
   
 public:
 
-  Airport() { // 3 flights at the start
+  Flights() { // 3 flights at the start
     generateFlight(); 
     generateFlight(); 
     generateFlight(); 
@@ -27,7 +26,7 @@ int main() {
   srand(time(0));
   cout<<"\033c";
   
-  Airport flight;
+  Flights flight;
   int choice;
   cout << "******************* LISHA'S AMAZING AIRPORT *******************\n";
   while(true) {
@@ -61,8 +60,8 @@ bool flightExists(vector<string> FlightIDs, string id) {
   return false;
 }
 
-void Airport::generateFlight() {
-  Flight flight;
+void Flights::generateFlight() {
+  Flights flight;
   do {
     char letter = rand() % 26 + 65; //uppercase letter
     int number = rand() % 1000;
