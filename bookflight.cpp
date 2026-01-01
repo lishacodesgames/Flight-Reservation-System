@@ -3,6 +3,10 @@
 #include <vector>
 #include <ctime>
 using namespace std;
+void printTitle() { // to avoid having to manually replace \033c when i'm on windows
+  cout << "\033c";
+  cout << "******************* LISHA'S AMAZING AIRPORT *******************\n";  
+}
 
 
 class Flights {
@@ -22,13 +26,14 @@ public:
   void generateFlight();
 };
 
+
 int main() {
   srand(time(0));
-  cout<<"\033c";
+  printTitle();
   
   Flights flight;
   int choice;
-  cout << "******************* LISHA'S AMAZING AIRPORT *******************\n";
+
   while(true) {
     cout << "\n0. Exit";
     cout << "\n1. Book a flight";
@@ -39,7 +44,9 @@ int main() {
     switch(choice) {
       case 0: exit(0); 
 
-      case 1: break;
+      case 1: 
+
+        break;
       
       case 2: break;
 
