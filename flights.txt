@@ -1,12 +1,21 @@
 T481||Rome->Delhi||11/13
 Z602||New York->Delhi||2/3
-Y475||Mumbai->Delhi||0/5
 O428||Delhi->Mumbai||4/8
 A622||Mumbai->Paris||3/5
 B206||Rome->New York||1/3
 Y162||Paris->Rome||12/14
 L386||New York->Rome||2/4
-N228||Paris->Rome||0/2
-S852||Rome->New York||1/13
-W964||Rome->New York||0/7
-U253||Paris->Delhi||2/4
+E280||Paris->Rome||3/6
+B513||Mumbai->Delhi||11/12
+I937||Delhi->New York||2/15
+R61||Paris->Rome||0/6
+S904||Rome->New York||6/10
+Q576||Delhi->New York||3/7
+B762||Delhi->Paris||7/12
+L53||Rome->Mumbai||1/4
+Y113||Mumbai->Delhi||5/8
+C373||New York->Mumbai||0/1
+V330||Mumbai->New York||3/8
+T240||Delhi->Paris||4/7
+G575||Paris->New York||1/5
+N981||Delhi->Paris||0/1
