@@ -1,0 +1,102 @@
+- **Files in Program:**
+    1. bookflights.cpp
+    2. flights.txt
+    3. passengers.txt
+- **Classes:**
+    1. **CLASS** Flights
+    - **MEMBERS:**
+        1. ID (”A123”) = `string ID`
+        2. Origin city (both capitalized) = `string City1`
+        3. Destination city = `string City2`
+        4. No. of Available Seats = `int emptySeats`
+        5. No. of Total Seats = `int totalSeats`
+        6. Time of Departure = `int depTime`
+        7. Gate = `char gate`
+        8. Terminal (1 digit) = `short terminal`
+        9. List of flights = `vector<string> flightList`
+        10. List of Cities = `vector<string> Cities`
+    - **METHODS:**
+        - **PROCEDURE** generateRandomFlight()
+            1. Generate a random flight id with 1 letter, 3 numbers: A123
+            2. Generate a random Origin city from Cities
+            3. Generate a random Destination city from Cities, ensure it is distinct from Origin
+            4. Generate a random integer ∈[1,20] for total seats
+            5. Generate a random integer ≤ total seats for available seats
+        - **PROCEDURE** printFlightInfo (`string ID`)
+            1. Search flights.txt for ID
+            2. Print flight info as:
+            
+            ```
+            Flight B372
+            Mumbai -> Delhi
+            Seats Available: 5/16
+            Departing at: 16:00
+            ```
+            
+    1. **CLASS** User
+    - **MEMBERS:**
+        1. First Name = `int firstName`
+        2. Last Name = `int lastName`
+        3. ID of Booked Flight = `string bookedFlight`
+        4. Seat no. (12A) = `string seatNumber`
+    - **METHODS:**
+        - **PROCEDURE** displayBoardingPass()
+            1. Read flights.txt for user’s bookedFlight.
+            2. Print flight info as:
+            
+            ```
+            NAME OF PASSENGER: user's Full Name \t SEAT NO. seat
+            TO: destination \t FROM: origin
+            TIME: time of departure
+            
+            FLIGHT: flightID \t GATE gate \t TERMINAL: terminal
+            ```
+            
+- **Main loop:**
+    1. **CASE** user’s input **OF**
+    - **0:** Exit Program
+    - **1:** [Book flight]->(line 63)
+    - **2:** [Display flight info]->(line 85)
+    - **others:** Display invalid message, ask for input again
+        **ENDCASE**
+        
+- **Book flight:**
+    1. Ask user how they want to book
+    2. **CASE** user’s choice **OF**
+    - **0:** Go back
+    - **1:** [From city route](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
+    - **2:** [From flight ID](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
+    - **others:** Display invalid message, ask for input again  
+        **ENDCASE**
+        
+        - **→ From city route:**
+            1. Get user’s Origin city
+            2. Read flights.txt, find and print all flight from user’s Origin
+        - **→ From flight ID:**
+            1. Read flights.txt, print all flights.
+    1. Ask user which flight, by id, they want to book. Store it in bookedFlight
+    2. Display: “You’re almost done! Let’s get some of your details checked in: ”
+    3. Get user’s full name
+    4. Write user’s info in passengers.txt
+    5. Display: “All done! Thank you for booking a flight with us.”
+    6. displayBoardingPass()
+    7. Go back to [home page](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
+- **Display flight info:**
+    1. Ask user which flight they want to show
+    2. **CASE** user’s input **OF**
+    - **1:** [Your flight](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
+    - **2:** [Flight by ID](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
+    - **others:** Display invalid message, ask for input again
+        
+        **ENDCASE**
+        
+        - **→ User’s flight:**
+            1. Get user’s full name
+            2. Search passengers.txt for user
+            3. Read user’s flight no.
+            4. Search flights.txt for ID
+            5. printFlightInfo(ID)
+        - **→ Flight by id:**
+            1. Get flight ID
+            2. printFlightInfo(ID)
+    1. Wait for user input (Display “Click Enter to continue...), then go back to [home page](https://www.notion.so/Flight-Reservation-System-2dadd88701d88079beeee3f804f534da?pvs=21)
