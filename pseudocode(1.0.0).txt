@@ -77,10 +77,11 @@
     3. Ask user which flight, by id, they want to book. Store it in bookedFlight
     4. Display: “You’re almost done! Let’s get some of your details checked in: ”
     5. Get user’s full name
-    6. Write user’s info in passengers.txt
-    7. Display: “All done! Thank you for booking a flight with us.”
-    8. displayBoardingPass()
-    9. Go back to [home page]->(line 56)
+    6. Generate a seat number with 2-digit number <= totalSeats and capital letter <=D
+    7. Write user’s info in passengers.txt
+    8. Display: “All done! Thank you for booking a flight with us.”
+    9. displayBoardingPass()
+    10. Go back to [home page]->(line 56)
 
 - Display flight info:
     1. Ask user which flight they want to show
