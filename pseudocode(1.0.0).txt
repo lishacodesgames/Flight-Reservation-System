@@ -19,8 +19,12 @@
 //          ******************* LISHA'S AMAZING AIRPORT *******************` 
 
 - Classes:
-    1. CLASS Flights
+    1. STRUCT Airport
         - MEMBERS:
+            1. List of flights = `vector<string> flightList`
+            2. List of Cities = `vector<string> Cities`
+    1. CLASS Flight
+        - PRIVATE MEMBERS:
             1. ID (”A123”) = `string ID`
             2. Origin city (both capitalized) = `string City1`
             3. Destination city = `string City2`
@@ -29,9 +33,7 @@
             6. Time of Departure = `int depTime`
             7. Gate = `char gate`
             8. Terminal (1 digit) = `short terminal`
-            9. List of flights = `vector<string> flightList`
-            10. List of Cities = `vector<string> Cities`
-        - METHODS:
+        - PUBLIC METHODS:
             - PROCEDURE generateRandomFlight()
                 1. Generate a random flight id with 1 letter, 3 numbers: A123
                 2. Generate a random Origin city from Cities
