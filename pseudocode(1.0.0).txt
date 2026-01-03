@@ -20,9 +20,16 @@
 
 - Classes:
     1. STRUCT Airport
+        !!! Airport object must be declared after Flight.
         - MEMBERS:
             1. List of flights = `vector<string> flightList`
             2. List of Cities = `vector<string> Cities`
+        - METHODS:
+            - CONSTRUCTOR
+                1. CALL getFlights() once
+            - PROCEDURE getFlights()
+                1. Parse flights.txt for all existing IDs
+                2. Push them back to flightList
     1. CLASS Flight
         - PRIVATE MEMBERS:
             1. ID (”A123”) = `string ID`
@@ -34,6 +41,8 @@
             7. Gate = `char gate`
             8. Terminal (1 digit) = `short terminal`
         - PUBLIC METHODS:
+            - CONSTRUCTOR
+                1. CALL generateRandomFlight() 3 times
             - PROCEDURE generateRandomFlight()
                 1. Generate a random flight id with 1 letter, 3 numbers: A123
                 2. Push it back in flightList vector.
