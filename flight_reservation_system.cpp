@@ -21,11 +21,21 @@ void printTitle() {
 vector<string> Cities = {"Mumbai", "Delhi", "New York", "Dallas", "DC", "Paris",  "Tokyo", "London",   "Rome",   "Sikkim"};
 struct Airport {
   vector<string> flightList;
+
   Airport() {
     getFlights();
   }
   void getFlights() {
+    string parsedID;
+    string unwanted;
     ifstream flights("flights.txt");
+    
+    while (getline(flights, parsedID, '|')) {
+      flightList.push_back(parsedID);
+      getline(flights, unwanted);
+    }
+
+    flights.close();
   }
 };
 
@@ -47,7 +57,7 @@ class Flight {
   void generateRandomFlight() {
     // id
     char idLetter = rand() % 26 + 65;
-    int idNumber = rand() % 1000;
+    int idNumber = rand() % 900 + 100; // 100 -> 999
 
     ID = idLetter + to_string(idNumber);
 
@@ -66,7 +76,8 @@ class Flight {
     int minutes = rand() % 60;
 
     ofstream outTime("temp_time.txt");
-    outTime << setw(2) << setfill('0') << hour << minutes;
+    outTime << setfill('0') << setw(2) << hour;
+    outTime << setfill('0') << setw(2) << minutes;
     outTime.close();
 
     ifstream inTime("temp_time.txt");
@@ -80,23 +91,32 @@ class Flight {
     // file output
     ofstream flights("flights.txt", ios::app);
 
-    flights << ID << '|' << City1 << ',' << City2 << '|' << emptySeats << '/'
-            << totalSeats << '|';
-    flights << setw(2) << setfill('0') << hour << minutes;
-    flights << '|' << gate << '|' << terminal << '\n';
+    flights << ID << '|' << City1 << ',' << City2 << '|' << emptySeats << '/' << totalSeats << '|' << depTime << '|' << gate << '|' << terminal << '\n';
 
     flights.close();
   }
   
   void printFlightInfo(string ID) {
     ifstream flights("flights.txt");
+    string unwanted;
 
-    getline(flights, this->ID);
-    if (this->ID == ID) {
-      cout << "Flight " << this->ID << '\n';
-      cout << City1 << " -> " << City2 << '\n';
-      cout << "Seats Available: " << emptySeats << '/' << totalSeats << '\n';
-      cout << "Departing at: " << depTime << '\n';
+    while(getline(flights, this->ID, '|')) {
+      if (this->ID == ID) {
+        string tempStr;
+        getline(flights, City1, ',');
+        getline(flights, City2, '|');
+        getline(flights, tempStr, '/'); emptySeats = stoi(tempStr);
+        getline(flights, tempStr, '|'); totalSeats = stoi(tempStr);
+        getline(flights, depTime, '|');
+        getline(flights, tempStr, '|'); gate = tempStr[0];
+        getline(flights, tempStr); terminal = stoi(tempStr);
+
+        cout << "Flight " << this->ID << '\n';
+        cout << City1 << " -> " << City2 << '\n';
+        cout << "Seats Available: " << emptySeats << '/' << totalSeats << '\n';
+        cout << "Departing at: " << depTime << '\n';
+      }
+      getline(flights, unwanted);
     }
 
     flights.close();
@@ -113,8 +133,9 @@ int main() {
   Flight flight;
   Airport lisha;
 
-  flight.printFlightInfo("A123");
+  flight.printFlightInfo("V311");
 
+  cout << '\n';
   for(string flight : lisha.flightList) {
     cout << flight << " ";
   }
