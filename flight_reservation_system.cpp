@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <ctime>
 using namespace std;
 
@@ -25,38 +26,58 @@ struct Airport {
 class Flight {
   string ID, City1, City2;
   int emptySeats, totalSeats;
-  int depTime;
+  string depTime;
   char gate;
   short terminal;
 
 public:
+  Flight() {
+    generateRandomFlight(); 
+    generateRandomFlight(); 
+    generateRandomFlight(); 
+  }
   // todo TEST IN TEST BRANCH WITH TERMINAL OUTPUT
   void generateRandomFlight() {
     // id
-    char idLetter = rand() % 26 + 1;
-    int idNumber = rand() % 1000;
+  char idLetter = rand() % 26 + 65;
+  int idNumber = rand() % 1000;
 
-    ID = idLetter + to_string(idNumber);
-    lisha.flightList.push_back(ID);
+  ID = idLetter + to_string(idNumber);
+  lisha.flightList.push_back(ID);
 
-    // cities
-    City1 = lisha.Cities[rand() % lisha.Cities.size()];
-    do {
-      City2 = lisha.Cities[rand() % lisha.Cities.size()];
-    }while(City1 == City2);
+  // cities
+  City1 = lisha.Cities[rand() % lisha.Cities.size()];
+  do {
+    City2 = lisha.Cities[rand() % lisha.Cities.size()];
+  }while(City1 == City2);
 
-    // seats
-    totalSeats = rand() % 20 + 1;
-    emptySeats = rand() % (totalSeats + 1);
+  // seats
+  totalSeats = rand() % 20 + 1;
+  emptySeats = rand() % (totalSeats + 1);
 
-    // time
-    int hour = rand() % 24; //! MAKE IT SHOW 0 PREFIX FOR SINGLE DIGIT HOURS
-    int minutes = rand() % 60; //! SAME: 0 PREFIX
-    depTime = stoi(to_string(hour) + to_string(minutes));
+  // time
+  int hour = rand() % 24;
+  int minutes = rand() % 60;
+  
+  ofstream outTime("temp_time.txt");
+  outTime << setw(2) << setfill('0') << hour << minutes;
+  outTime.close();
 
-    // gate & terminal
-    gate = rand() % 26 + 1;
-    terminal = rand() % 9 + 1; // no 0
+  ifstream inTime("temp_time.txt");
+  getline(inTime, depTime);
+  inTime.close();
+
+  // gate & terminal
+  gate = rand() % 26 + 65;
+  terminal = rand() % 9 + 1; // no 0
+
+  ofstream flights("flights.txt", ios::app);
+
+  flights << ID << ',' << City1 << ',' << City2 << ',' << emptySeats << '/' << totalSeats << ',';
+  flights << setw(2) << setfill('0') << hour << minutes;
+  flights << ',' << gate << ',' << terminal << '\n';
+
+  flights.close();
   }
 };
 
@@ -67,6 +88,7 @@ int main() {
   srand(time(0));
   printTitle();  
   
+  Flight flight;
   
   cout<<'\n';
   return 0;
