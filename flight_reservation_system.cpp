@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 using namespace std;
+vector<string> Cities = {"Mumbai", "Delhi", "New York", "Dallas", "DC", "Paris",  "Tokyo", "London",   "Rome",   "Sikkim"};
 
 #pragma region functions
 
@@ -18,13 +19,11 @@ void printTitle() {
 
 #pragma region Classes
 
-vector<string> Cities = {"Mumbai", "Delhi", "New York", "Dallas", "DC", "Paris",  "Tokyo", "London",   "Rome",   "Sikkim"};
 struct Airport {
   vector<string> flightList;
 
-  Airport() {
-    getFlights();
-  }
+  Airport() { getFlights(); }
+
   void getFlights() {
     string parsedID;
     string unwanted;
@@ -63,9 +62,7 @@ class Flight {
 
     // cities
     City1 = Cities[rand() % Cities.size()];
-    do {
-      City2 = Cities[rand() % Cities.size()];
-    } while (City1 == City2);
+    do { City2 = Cities[rand() % Cities.size()]; } while (City1 == City2);
 
     // seats
     totalSeats = rand() % 20 + 1;
@@ -101,7 +98,9 @@ class Flight {
     string unwanted;
 
     while(getline(flights, this->ID, '|')) {
-      if (this->ID == ID) {
+      if(this->ID != ID) getline(flights, unwanted);
+      else {
+        #pragma region parsing
         string tempStr;
         getline(flights, City1, ',');
         getline(flights, City2, '|');
@@ -110,13 +109,13 @@ class Flight {
         getline(flights, depTime, '|');
         getline(flights, tempStr, '|'); gate = tempStr[0];
         getline(flights, tempStr); terminal = stoi(tempStr);
+        #pragma endregion
 
         cout << "Flight " << this->ID << '\n';
         cout << City1 << " -> " << City2 << '\n';
         cout << "Seats Available: " << emptySeats << '/' << totalSeats << '\n';
         cout << "Departing at: " << depTime << '\n';
       }
-      getline(flights, unwanted);
     }
 
     flights.close();

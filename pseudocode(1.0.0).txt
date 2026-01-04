@@ -39,7 +39,7 @@
             3. Destination city = `string City2`
             4. No. of Available Seats = `int emptySeats`
             5. No. of Total Seats = `int totalSeats`
-            6. Time of Departure = `int depTime`
+            6. Time of Departure = `string depTime`
             7. Gate = `char gate`
             8. Terminal (1 digit) = `short terminal`
         - PUBLIC METHODS:
@@ -47,15 +47,14 @@
                 1. CALL generateRandomFlight() 3 times
             - PROCEDURE generateRandomFlight()
                 1. Generate a random flight id with 1 letter, 3 numbers: A123
-                2. Push it back in flightList vector.
-                3. Generate a random Origin city from Cities
-                4. Generate a random Destination city from Cities, ensure it is distinct from Origin
-                5. Generate a random integer ∈[1,20] for total seats
-                6. Generate a random integer ≤ total seats for available seats
-                7. Generate random hour ≤ 23, add it to random minute ≤ 59 to get `depTime`
-                8. Generate random capital letter for `gate`
-                9. Generate random 1-digit number for `terminal`
-                10. Save flight info in flights.txt
+                2. Generate a random Origin city from Cities
+                3. Generate a random Destination city from Cities, ensure it is distinct from Origin
+                4. Generate a random integer ∈[1,20] for total seats
+                5. Generate a random integer ≤ total seats for available seats
+                6. Generate random hour < 24, add it to random minute < 60 to get `depTime`. [NOTE: include leading 0s for single-digit time values]
+                7. Generate random capital letter for `gate`
+                8. Generate random 1-digit number for `terminal`
+                9. Save flight info in flights.txt
             - PROCEDURE printFlightInfo (`string ID`)
                 1. Search flights.txt for ID
                 2. Print flight info as:
