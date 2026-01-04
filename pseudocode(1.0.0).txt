@@ -9,6 +9,9 @@
     3. passengers.txt
         firstName,lastName,ID,seat
 
+- GLOBALS:
+    2. List of Cities = `vector<string> Cities`
+
 - Functions:
     - PROCEDURE printTitle()
         1. Clear terminal:
@@ -23,7 +26,6 @@
         !!! Airport object must be declared after Flight.
         - MEMBERS:
             1. List of flights = `vector<string> flightList`
-            2. List of Cities = `vector<string> Cities`
         - METHODS:
             - CONSTRUCTOR
                 1. CALL getFlights() once
