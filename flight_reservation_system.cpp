@@ -9,11 +9,11 @@ vector<string> Cities = {"Mumbai", "Delhi", "New York", "Dallas", "DC", "Paris",
 #pragma region functions
 
 void clrscr() {
-#if defined(_WIN32)
-  system("cls");
-#elif defined(__APPLE__)
-  cout << "\033c";
-#endif
+  #if defined(_WIN32)
+    system("cls");
+  #elif defined(__APPLE__)
+    cout << "\033c";
+  #endif
   cout << "*************** LISHA'S AMAZING AIRPORT ***************\n";
 }
 
@@ -48,7 +48,7 @@ protected:
   char gate;
   short terminal;
 
- public:
+public:
   Flight() {
     generateRandomFlight();
     generateRandomFlight();
