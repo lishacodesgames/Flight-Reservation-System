@@ -139,6 +139,54 @@ class Flight {
 
     flights.close();
   }
+
+  // TODO add logic
+  void book(string how) {
+    vector<string> validFlights;
+
+    if(how == "City") {
+      while(true) {
+        string userOrigin;
+        cout << "What is your origin city? ";
+        cin >> userOrigin; cin.ignore();
+
+        string tempStr;
+        ifstream flights("flights.txt");
+
+        while(getline(flights, tempStr, '|')) {
+          ID = tempStr;
+          getline(flights, City1, ',');
+
+          if(userOrigin != City1) {
+            getline(flights, tempStr);
+            continue;
+          }
+
+          clrscr();
+          validFlights.push_back(ID);
+          printFlightInfo(ID); cout << '\n';
+        }
+
+        if(validFlights.size() == 0) {
+          cout << "Sorry! There is no flight from this city.\n";
+          flights.close(); // close before breaking
+          break;
+        }
+
+        if(flights.eof()) {
+          flights.close();
+          break;
+        }
+
+      }
+    }
+    else if(how == "ID") {
+
+    }
+    else {
+
+    }
+  }
 };
 
 class User : private Flight {
@@ -225,57 +273,62 @@ int main() {
   Airport lisha;
   User user;
   
-  choose:
-  int choice;
-  cout << "0. Exit Program\n";
-  cout << "1. Book Flight\n";
-  cout << "2. Display Flight Info\n";
-  cout << "What would you like to do? ";
-  cin >> choice;
+  while(true) {
+    int choice;
+    cout << "0. Exit Program\n";
+    cout << "1. Book Flight\n";
+    cout << "2. Display Flight Info\n";
+    cout << "What would you like to do? ";
+    cin >> choice;
 
-  clrscr();
+    clrscr();
 
-  switch(choice) {
-    case 0: 
-      cout << "Thank you for booking with us!\n";
-      exit(0);
+    switch(choice) {
+      case 0: 
+        cout << "Thank you for booking with us!\n";
+        exit(0);
 
-    case 1: 
-      book:
-      cout << "0. Go back\n";
-      cout << "1. Book from City Route\n";
-      cout << "2. Book from Flight ID\n";
-      cout << "What would you like to do? ";
-      cin >> choice;
+      // FIXME loop not working
+      case 1: 
+        book:
+        cout << "0. Go back\n";
+        cout << "1. Book from City Route\n";
+        cout << "2. Book from Flight ID\n";
+        cout << "What would you like to do? ";
+        cin >> choice;
 
-      clrscr();
+        clrscr();
 
-      switch(choice) {
-        case 0:
-          goto choose;
+        switch(choice) {
+          case 0:
+            break;
 
-        case 1:
-          cout << "1";
-          break;
+          // TODO add logic
+          case 1:
+            flight.book("City");
+            break;
 
-        case 2:
-          cout << "2";
-          break;
-          
-        default:
-          cout << "Invalid choice. Please choose again.\n\n";
-          goto book;
-      }
+          // TODO add logic
+          case 2:
+            flight.book("ID");
+            break;
 
-      break;
-    
-    case 2:
-      cout << "2";
-      break;
-    
-    default:
-      cout << "Invalid choice. Please choose again.\n\n";
-      goto choose;
+          default:
+            cout << "Invalid choice. Please choose again.\n\n";
+            goto book;
+        }
+
+        break;
+      
+      // TODO add display logic
+      case 2:
+        cout << "2";
+        break;
+      
+      default:
+        cout << "Invalid choice. Please choose again.\n\n";
+        break;
+    }
   }
 
   cout << '\n';
