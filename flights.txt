@@ -2,19 +2,6 @@ V311|Rome,Delhi|1/9|0163|G|3
 L517|London,Rome|14/16|2321|U|8
 L333|Mumbai,Dallas|1/9|1921|J|7
 F155|Delhi,DC|11/17|1328|U|4
-J869|London,Mumbai|15/15|2346|D|5
-V947|Delhi,Sikkim|4/4|0438|J|9
-Z558|Mumbai,Dallas|6/19|0203|R|3
-N150|Paris,Dallas|2/2|1714|B|7
-B554|Sikkim,Paris|8/15|1221|S|1
-Z491|DC,Paris|0/10|1931|R|8
-I187|Paris,London|3/11|1651|C|9
-K240|London,Rome|14/15|0158|W|4
-Z221|Rome,Tokyo|4/6|0151|S|7
-M507|Delhi,Paris|1/3|2135|F|7
-D147|Dallas,Rome|0/19|0814|B|7
-Q732|Tokyo,Dallas|1/1|1142|D|1
-A700|Tokyo,London|12/16|1323|E|2
 F383|New York,Sikkim|18/20|0523|B|3
 R200|Tokyo,Sikkim|8/14|1947|G|9
 E613|Mumbai,Tokyo|2/12|0942|I|8
@@ -24,3 +11,14 @@ I557|Mumbai,DC|6/8|2132|O|6
 V425|Paris,DC|2/9|0700|V|7
 X925|Dallas,Delhi|6/18|0254|P|9
 D684|Dallas,Sikkim|12/18|0054|V|1
+A648|Sikkim,Mumbai|0/16|1959|K|6
+V936|DC,London|2/4|0300|T|7
+X505|Delhi,Mumbai|14/20|2025|T|8
+I658|Rome,Tokyo|8/16|1845|V|5
+I204|Mumbai,Paris|12/13|1840|Y|6
+A384|New York,Sikkim|1/4|1315|O|7
+S297|Mumbai,Rome|1/2|1910|K|7
+P102|Delhi,Rome|0/12|1016|O|1
+X740|Dallas,Mumbai|13/19|0116|X|6
+A321|Sikkim,DC|5/15|0840|L|7
+D604|Delhi,Rome|11/19|0523|L|3

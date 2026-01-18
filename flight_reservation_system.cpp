@@ -225,6 +225,34 @@ int main() {
   Airport lisha;
   User user;
 
+  choose:
+  int choice;
+  cout << "0. Exit Program\n";
+  cout << "1. Book Flight\n";
+  cout << "2. Display Flight Info\n";
+  cout << "What would you like to do? ";
+  cin >> choice;
+
+  clrscr();
+
+  switch(choice) {
+    case 0: 
+      cout << "Thank you for booking with us!\n";
+      exit(0);
+
+    case 1: 
+      cout << "1";
+      break;
+    
+    case 2:
+      cout << "2";
+      break;
+    
+    default:
+      cout << "Invalid choice. Please choose again.\n\n";
+      goto choose;
+  }
+
   cout << '\n';
   return 0;
 }
