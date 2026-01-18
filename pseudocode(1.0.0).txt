@@ -101,7 +101,7 @@
         - From flight ID:
             1. Read flights.txt, print all flights.
         3. Ask user which flight, by id, they want to book. 
-*      4. IF available seats == 0 THEN
+        4. IF available seats == 0 THEN
 *           - Display: “Sorry, this flight is full!”
 *           - Go back to [Book flight]->(line 68) page
         5. Store id in bookedFlight

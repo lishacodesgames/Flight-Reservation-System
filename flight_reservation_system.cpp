@@ -5,6 +5,10 @@
 #include <vector>
 using namespace std;
 
+/** BUGS
+ * @bug 
+ */
+
 #pragma region Globals
 
 vector<string> Cities = {"Mumbai", "Delhi", "New York", "Dallas", "DC",
@@ -139,60 +143,155 @@ class Flight {
 
     flights.close();
   }
-
-  // TODO add logic
-  void book(string how) {
-    vector<string> validFlights;
-
-    if(how == "City") {
-      while(true) {
-        string userOrigin;
-        cout << "What is your origin city? ";
-        cin >> userOrigin; cin.ignore();
-
-        string tempStr;
-        ifstream flights("flights.txt");
-
-        while(getline(flights, tempStr, '|')) {
-          ID = tempStr;
-          getline(flights, City1, ',');
-
-          if(userOrigin != City1) {
-            getline(flights, tempStr);
-            continue;
-          }
-
-          clrscr();
-          validFlights.push_back(ID);
-          printFlightInfo(ID); cout << '\n';
-        }
-
-        if(validFlights.size() == 0) {
-          cout << "Sorry! There is no flight from this city.\n";
-          flights.close(); // close before breaking
-          break;
-        }
-
-        if(flights.eof()) {
-          flights.close();
-          break;
-        }
-
-      }
-    }
-    else if(how == "ID") {
-
-    }
-    else {
-
-    }
-  }
 };
 
 class User : private Flight {
   string firstName, lastName, bookedFlight, seatNumber;
 
  public:
+  // TODO
+  void bookFlight(string how) {
+    vector<string> validFlights;
+
+    if (how == "City") {
+      while (true) {
+        string userOrigin;
+        cout << "What is your origin city? ";
+        getline(cin, userOrigin);
+
+        string tempStr;
+        ifstream flights("flights.txt");
+
+        clrscr();
+        while (getline(flights, tempStr, '|')) {
+          ID = tempStr;
+          getline(flights, City1, ',');
+
+          if (userOrigin != City1) {
+            getline(flights, tempStr);
+            continue;
+          }
+
+          validFlights.push_back(ID);
+          printFlightInfo(ID);
+          cout << '\n';
+        }
+
+        flights.close();
+
+        if (validFlights.size() == 0) {
+          cout << "Sorry! There is no flight from this city.\n";
+        }
+        else break;
+      }
+    }
+
+    else if (how == "ID") {
+      ifstream flights("flights.txt");
+      string unwanted;
+
+      while (getline(flights, ID, '|')) {
+        printFlightInfo(ID);
+        getline(flights, unwanted);
+      }
+
+      flights.close();
+    }
+
+    string id;
+    cout << "Enter ID of flight you want to book, or x to Go Back: ";
+    getline(cin, id);
+
+    if (id == "x") {
+      clrscr();
+      return;
+    }
+
+    bool idValid = false;
+    for (string validID : validFlights) {
+      if (id == validID) {
+        idValid = true;
+        break;
+      }
+    }
+
+    if (!idValid)
+      cout << "Invalid ID.\n";
+    else {
+      ifstream flights("flights.txt");
+
+      while (getline(flights, ID, '|')) {
+#pragma region parsing
+        string tempStr;
+
+        getline(flights, City1, ',');
+        getline(flights, City2, '|');
+        getline(flights, tempStr, '/');
+        emptySeats = stoi(tempStr);
+        getline(flights, tempStr, '|');
+        totalSeats = stoi(tempStr);
+        getline(flights, depTime, '|');
+        getline(flights, tempStr, '|');
+        gate = tempStr[0];
+        getline(flights, tempStr);
+        terminal = stoi(tempStr);
+#pragma endregion
+
+        if (ID == id) {
+          break;
+        }
+      }
+
+      flights.close();
+
+      if (emptySeats == 0) {
+        clrscr();
+        cout << "Sorry, this flight is full.\n";
+        return;
+      }
+
+      bookedFlight = id;
+
+      clrscr();
+      cout << "You're almost done! Let's get some of your details checked in.\n";
+      cout << "Enter your first name: ";
+      cin >> firstName;
+
+      cout << "Enter your last name: ";
+      cin >> lastName;
+      cin.ignore();
+
+      int seat = rand() % totalSeats + 1;
+      char aisle = rand() % 4 + 65;
+
+      ofstream Seat("temp_seat.txt");
+
+      Seat << setfill('0') << setw(2) << seat;
+      Seat << aisle;
+
+      Seat.close();
+
+      ifstream SeaT("temp_seat.txt");
+
+      getline(SeaT, seatNumber);
+
+      SeaT.close();
+
+      ofstream passengers("passengers.txt", ios::app);
+
+      passengers << firstName << ',' << lastName << ',' << bookedFlight << ','
+                 << seatNumber << '\n';
+
+      passengers.close();
+
+      clrscr();
+      cout << "All done! Thank you for booking a flight with us.\n";
+      cout << "Your boarding pass: \n\n";
+      displayBoardingPass(firstName + " " + lastName);
+      cout << "\n";
+    }
+  }
+
   void displayBoardingPass(string fullName) {
     bool userFound = false;
     string tempStr;
@@ -238,20 +337,26 @@ class User : private Flight {
       if (ID != bookedFlight)
         getline(flights, tempStr);
       else {
-        #pragma region parsing
-          getline(flights, City1, ',');
-          getline(flights, City2, '|');
-          getline(flights, tempStr, '/'); emptySeats = stoi(tempStr);
-          getline(flights, tempStr, '|'); totalSeats = stoi(tempStr);
-          getline(flights, depTime, '|');
-          getline(flights, tempStr, '|'); gate = tempStr[0];
-          getline(flights, tempStr); terminal = stoi(tempStr);
-        #pragma endregion
+#pragma region parsing
+        getline(flights, City1, ',');
+        getline(flights, City2, '|');
+        getline(flights, tempStr, '/');
+        emptySeats = stoi(tempStr);
+        getline(flights, tempStr, '|');
+        totalSeats = stoi(tempStr);
+        getline(flights, depTime, '|');
+        getline(flights, tempStr, '|');
+        gate = tempStr[0];
+        getline(flights, tempStr);
+        terminal = stoi(tempStr);
+#pragma endregion
 
         clrscr();
-        cout << "NAME OF PASSENGER: " << fullName << '\t' << "SEAT NO. " << seatNumber << '\n';
+        cout << "NAME OF PASSENGER: " << fullName << '\t' << "SEAT NO. "
+             << seatNumber << '\n';
         cout << "TO: " << City2 << '\t' << "FROM: " << City1 << '\n';
-        cout << "TIME: " << depTime.substr(0, 2) << ':' << depTime.substr(2, string::npos);
+        cout << "TIME: " << depTime.substr(0, 2) << ':'
+             << depTime.substr(2, string::npos);
         cout << "\n\n";
         cout << "FLIGHT: " << bookedFlight << "\n";
         cout << "GATE " << gate << "\t" << "TERMINAL " << terminal << '\n';
@@ -268,12 +373,12 @@ class User : private Flight {
 int main() {
   srand(time(0));
   clrscr();
-  
+
   Flight flight;
   Airport lisha;
   User user;
-  
-  while(true) {
+
+  while (true) {
     int choice;
     cout << "0. Exit Program\n";
     cout << "1. Book Flight\n";
@@ -283,48 +388,48 @@ int main() {
 
     clrscr();
 
-    switch(choice) {
-      case 0: 
+    switch (choice) {
+      case 0:
         cout << "Thank you for booking with us!\n";
         exit(0);
 
       // FIXME loop not working
-      case 1: 
-        book:
+      case 1:
+      book:
         cout << "0. Go back\n";
         cout << "1. Book from City Route\n";
         cout << "2. Book from Flight ID\n";
         cout << "What would you like to do? ";
         cin >> choice;
+        cin.ignore();
 
         clrscr();
 
-        switch(choice) {
+        switch (choice) {
           case 0:
             break;
 
-          // TODO add logic
           case 1:
-            flight.book("City");
+            user.bookFlight("City");
             break;
 
-          // TODO add logic
           case 2:
-            flight.book("ID");
+            user.bookFlight("ID");
             break;
 
           default:
             cout << "Invalid choice. Please choose again.\n\n";
             goto book;
+            break;
         }
 
         break;
-      
+
       // TODO add display logic
       case 2:
         cout << "2";
         break;
-      
+
       default:
         cout << "Invalid choice. Please choose again.\n\n";
         break;
