@@ -3,5 +3,4 @@ desktop.ini
 .vscode/launch.json
 .DS_Store
 flight_reservation_system
-*.txt
-!pseudocode\(1.0.0\).txt
+pseudocode\(1.0.0\).txt

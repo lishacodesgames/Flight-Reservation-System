@@ -1,0 +1,10 @@
+J123|Rome,Delhi|2/230|15:30|F|3
+B839|Venice,Mumbai|1/300|05:15|N|1
+I522|Hong Kong,Sydney|53/120|13:30|F|3
+N402|New York,Los Angeles|134/160|15:00|R|5
+J480|Istanbul,Seoul|174/200|17:45|J|2
+J102|Milan,Mexico City|103/280|02:00|P|4
+O910|Cairo,Paris|113/120|08:45|E|2
+V912|Macau,Dubai|40/90|10:15|G|3
+P129|London,Tokyo|80/270|19:45|V|1
+B102|Bangkok,Rio de Janeiro|23:00|Y|5
