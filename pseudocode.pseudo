@@ -117,13 +117,11 @@ CLASS Flight INHERITS Airport
       #region fileManagement
          APPEND ID TO flights
          OPENFILE "flights.txt" FOR APPEND
-         WRITELINE ID TO "flights.txt"
-         WRITELINE "" TO "flights.txt" // to make sure each flight is on a new line
+         WRITELINE ID + "\n" TO "flights.txt"
          CLOSEFILE "flights.txt"
 
          OPENFILE "flightsInfo.txt" FOR APPEND
-         WRITELINE ID + "|" + origin + "," + destination + "|" + emptySeats + "/" + totalSeats + "|" + departureTime + "|" + gate + "|" + terminal TO "flightsInfo.txt"
-         WRITELINE "" TO "flightsInfo.txt" // to make sure each flight is on a new line
+         WRITELINE ID + "|" + origin + "," + destination + "|" + emptySeats + "/" + totalSeats + "|" + departureTime + "|" + gate + "|" + terminal + "\n" TO "flightsInfo.txt"
          CLOSEFILE "flightsInfo.txt"
       #endregion
       ENDPROCEDURE
@@ -133,12 +131,13 @@ CLASS Flight INHERITS Airport
       // goes to that line in flightsInfo.txt
       // reads all values
       // prints them in a nice format
-      PROCEDURE getFlightInfo(ID : STRING, toBePrinted : BOOLEAN) //TODO add a way to filter flight with origin/destination/time
+      PROCEDURE getFlightInfo(id : STRING, toBePrinted : BOOLEAN) //TODO add a way to filter flight with origin/destination/time
       #region confirmID
          DECLARE index : INTEGER
-         index <- getIndex(ID, flights)
+         index <- getIndex(id, flights)
          IF index == -1 THEN
-            PRINT "Flight " + ID + " does not exist."
+            CALL printTitle()
+            PRINT "Flight " + id + " does not exist."
             RETURN
          ENDIF
       #endregion
@@ -146,7 +145,7 @@ CLASS Flight INHERITS Airport
       #region readValues
          OPENFILE "flightsInfo.txt" FOR READ
 
-         FOR i <- 0 TO index // if index = 0, line = 1. So skips = index+1 hence we iterate 0->index
+         FOR i <- 0 TO index-1 // index = line so skips = index
             READLINE "flightsInfo.txt" INTO tempString // skip lines until we get to the one we want
          NEXT i
 
@@ -174,8 +173,8 @@ CLASS Flight INHERITS Airport
          PRINT "Flight " + ID
          PRINT origin + " -> " + destination
          PRINT "Seats available: " + emptySeats + "/" + totalSeats
-         PRINT "Departing at: " + departureTime
-         PRINT "Gate: " + gate + "\t Terminal: " + terminal
+         PRINT "Departing at " + departureTime
+         PRINT "Gate " + gate + "\t Terminal " + terminal
       ENDPROCEDURE
 
       PROCEDURE displayAllFlights() //TODO add ways to filter flights by origin/destination/time

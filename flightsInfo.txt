@@ -7,4 +7,8 @@ J102|Milan,Mexico City|103/280|02:00|P|4
 O910|Cairo,Paris|113/120|08:45|E|2
 V912|Macau,Dubai|40/90|10:15|G|3
 P129|London,Tokyo|80/270|19:45|V|1
-B102|Bangkok,Rio de Janeiro|23:00|Y|5
+B102|Bangkok,Rio de Janeiro|25/100|23:00|Y|5
+N862|Los Angeles,Dubai|208/380|10:30|C|2
+Q940|Rome,Paris|114/240|21:45|W|5
+O181|London,Delhi|35/80|01:30|A|2
+I647|Milan,Mexico City|22/280|17:30|Q|5
