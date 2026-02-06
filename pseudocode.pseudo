@@ -36,31 +36,37 @@ CLASS Airport
       DECLARE cities : VECTOR OF STRING
    PUBLIC:
       PROCEDURE NEW()
-         CALL getFlights()
-         CALL getCities()
+         flights <- getFlights()
+         cities <- getCities()
       ENDPROCEDURE
 
-      PROCEDURE getFlights()
-         flights <- []
+      FUNCTION getFlights() RETURNS VECTOR OF STRING
          DECLARE id : STRING
+         DECLARE flights : VECTOR OF STRING
+
          OPENFILE "flights.txt" FOR READ
          WHILE NOT EOF("flights.txt") DO
             READLINE "flights.txt" INTO id
             APPEND id TO flights
          ENDWHILE
          CLOSEFILE "flights.txt"
-      ENDPROCEDURE
 
-      PROCEDURE getCities()
-         cities <- []
+         RETURN flights
+      ENDFUNCTION
+
+      FUNCTION getCities() RETURNS VECTOR OF STRING
          DECLARE city : STRING
+         DECLARE cities : VECTOR OF STRING
+
          OPENFILE "cities.txt" FOR READ
          WHILE NOT EOF("cities.txt") DO
             READLINE "cities.txt" INTO city
             APPEND city TO cities
          ENDWHILE
          CLOSEFILE "cities.txt"
-      ENDPROCEDURE
+
+         RETURN cities
+      ENDFUNCTION
 ENDCLASS
 
 CLASS Flight INHERITS Airport
