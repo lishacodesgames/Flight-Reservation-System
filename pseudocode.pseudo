@@ -185,20 +185,19 @@ CLASS Flight INHERITS Airport
 ENDCLASS
 
 CLASS Passenger
-   PRIVATE:
+   PROTECTED:
       DECLARE name : STRING
       DECLARE age : INTEGER // ∈ [1, 99]
       DECLARE bookedFlight : STRING
       DECLARE seat : STRING // 2-digit number <= totalSeats/5 + CHAR(A-E)
-   PUBLIC:
-      PROCEDURE bookFlight() //TODO, V0.2.0
-         PRINT "Booking a flight..."
-      ENDPROCEDURE
+ENDCLASS
 
-      //TODO add other ways to access boarding pass
-      FUNCTION displayBoardingPass() RETURNS BOOLEAN //TODO move to new class BoardingPass or Displayer
+CLASS Viewer INHERITS Passenger, Flight
+   PUBLIC:
+      FUNCTION displayBoardingPass() RETURNS BOOLEAN
          DECLARE tempString : STRING
          DECLARE nameInput : STRING
+         printTitle()
          INPUT "Enter name of passenger: " INTO nameInput
          
       #region getPassengerInfo
@@ -222,24 +221,30 @@ CLASS Passenger
       #endregion
 
          IF NOT passengerExists THEN
+            printTitle()
             PRINT name + " does not have a boarding pass."
             RETURN FALSE
          ENDIF
 
-      #region printInfo //TODO move 
-         DECLARE flight : Flight
-         CALL flight.getFlightInfo(bookedFlight, FALSE)
+      #region printInfo
+         CALL getFlightInfo(bookedFlight, FALSE)
 
-         // print everything
-         PRINT "NAME OF PASSENGER: " + name + "\t AGE: " + TOSTRING(age)
+         printTitle()
+         PRINT "NAME OF PASSENGER: " + name + "\t AGE: " + age
          PRINT "SEAT NO. " + seat
          PRINT "TO: " + destination + "\t FROM: " + origin
          PRINT "TIME: " + departureTime
-         PRINT "FLIGHT: " + bookedFlight + "\t GATE: " + gate + "\t TERMINAL: " + TOSTRING(terminal)
+         PRINT "FLIGHT: " + bookedFlight
+         PRINT "GATE " + gate + "\t TERMINAL " + terminal
       #endregion
 
          RETURN TRUE
       ENDFUNCTION
+ENDCLASS
+
+CLASS Booker INHERITS Passenger, Flight
+   PUBLIC:
+
 ENDCLASS
 
 // MAIN
@@ -263,7 +268,7 @@ WHILE TRUE
    CASE OF choice
       case 0 : EXIT PROGRAM
       case 1 : 
-         CALL passenger.bookFlight()
+         // TODO
          BREAK
       case 2 : 
          INPUT "Enter flight ID: " INTO tempString

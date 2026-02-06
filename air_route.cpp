@@ -171,12 +171,68 @@ public:
    }
 };
 
+class Passenger {
+protected:
+   string name;
+   int age; // ∈ [1, 99]
+   string bookedFlight;
+   string seat; // 2-digit number <= totalSeats/5 + CHAR(A-E)
+};
+
+class Viewer : public Flight, public Passenger {
+public:
+   bool displayBoardingPass() {
+      string tempString, nameInput;
+      printTitle();
+      cout << "Enter name of passenger: ";
+      cin >> nameInput;
+
+      #pragma region getPassengerInfo
+      bool passengerExists = false;
+      ifstream passengers("passengers.txt");
+      while(getline(passengers, this->name, ',')){
+         if(name != nameInput) {
+            getline(passengers, tempString);
+            continue;
+         }
+         passengerExists = true;
+         getline(passengers, tempString, ',');
+         age = stoi(tempString);
+         getline(passengers, bookedFlight, ',');
+         getline(passengers, seat);
+      }
+      passengers.close();
+      #pragma endregion
+
+      if(!passengerExists) {
+         printTitle();
+         cout << nameInput << " does not have a boarding pass.\n";
+         return false;
+      }
+
+      #pragma region printInfo
+      getFlightInfo(bookedFlight, false);
+
+      printTitle();
+      cout << "NAME OF PASSENGER: " << name << "\t AGE: " << age << "\n";
+      cout << "SEAT NO. " << seat << "\n";
+      cout << "TO: " << destination << "\t FROM: " << origin << "\n";
+      cout << "TIME: " << departureTime << "\n";
+      cout << "FLIGHT: " << bookedFlight << "\n";
+      cout << "GATE " << gate << "\t TERMINAL " << terminal << "\n";
+
+      #pragma endregion
+      
+      return true;
+   }
+};
+
 int main() {
    srand(time(0));
-   Flight flight;
+   Viewer program;
    system("cls");
    
-   flight.displayAllFlights();
+   program.displayBoardingPass();
    
    cout << "\n\n";
    return 0;
