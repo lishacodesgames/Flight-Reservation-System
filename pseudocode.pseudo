@@ -247,7 +247,138 @@ ENDCLASS
 
 CLASS Booker INHERITS Passenger, Flight
    PUBLIC:
+      FUNCTION displayOptions() RETURNS STRING //TODO
+         DECLARE choice : INTEGER
+         DECLARE temp : STRING
 
+         CALL printTitle()
+         REPEAT
+            PRINT "==============================="
+            PRINT "[0] Go back"
+            PRINT "[1] Choose a flight by ID"
+            PRINT "[2] Book from Origin city"
+            PRINT "==============================="
+            INPUT "Enter your choice: " INTO choice
+
+            IF choice < 0 OR choice > 2 THEN
+               CALL printTitle()
+               PRINT "Invalid choice.\n"
+            ENDIF
+         UNTIL NOT(choice < 0 OR choice > 2)
+
+         IF choice == 0 THEN
+            RETURN ""
+         ELSE IF choice == 1 THEN
+            CALL printTitle()
+            CALL displayAllFlights()
+            GETCH()
+            PRINT "==============================="
+            RETURN getID(flights)
+         ELSE IF choice == 2 THEN
+            DECLARE depCity : STRING // departure city  
+
+            depCity <- getCity("origin")
+            IF depCity == "" THEN
+               RETURN ""
+            ENDIF
+
+            // vector work
+            DECLARE originFlights : VECTOR OF STRING
+            DECLARE count = 0 : INTEGER
+            FOREACH flightID IN flights DO
+               CALL getFlightInfo(flightID, FALSE)
+               IF origin == depCity THEN
+                  APPEND flightID TO originFlights
+                  count <- count + 1
+               ENDIF
+            ENDFOREACH
+
+            // print info
+            CALL printTitle()
+            REPEAT
+               PRINT "There are " + count + " flights departing from " + depCity + "."
+               PRINT "==============================="
+               PRINT "[0] Go back"
+               PRINT "[1] Choose a flight by ID"
+               PRINT "[2] Book from Destination city"
+               PRINT "==============================="
+               INPUT "Enter your choice: " INTO choice
+
+               IF choice < 0 OR choice > 2 THEN
+                  printTitle()
+                  PRINT "Invalid choice.\n"
+               ENDIF
+            UNTIL NOT(choice < 0 OR choice > 2)
+
+            IF choice == 0 THEN
+               RETURN displayOptions()
+            ELSE IF choice == 1 THEN
+               FOREACH flightID IN originFlights DO
+                  CALL getFlightInfo(flightID, TRUE)
+               ENDFOREACH
+               GETCH()
+               PRINT "==============================="
+               RETURN getID(originFlights)
+            ELSE IF choice == 2 THEN
+               DECLARE arrCity : STRING // arrival city
+               arrCity <- getCity("destination")
+               IF arrCity == "" THEN
+                  RETURN ""
+               ENDIF
+
+               // vector work
+               DECLARE destinationFlights : VECTOR OF STRING
+               count <- 0
+               FOREACH flightID IN originFlights DO
+                  CALL getFlightInfo(flightID, FALSE)
+                  IF destination == arrCity THEN
+                     APPEND flightID TO destinationFlights
+                     count <- count + 1
+                  ENDIF
+               ENDFOREACH
+
+               // print info
+               CALL printTitle()
+               PRINT "There are " + count + " flights going from " + depCity + " -> " + arrCity + "."
+               PRINT "==============================="
+               FOREACH flightID IN destinationFlights DO
+                  CALL getFlightInfo(flightID, TRUE)
+               ENDFOREACH
+               GETCH()
+               PRINT "==============================="
+               RETURN getID(destinationFlights)
+            ENDIF
+         ENDIF
+
+         RETURN ""
+      ENDFUNCTION
+
+      FUNCTION getCity(type : STRING) RETURNS STRING
+         DECLARE city : STRING
+         DECLARE index : INTEGER
+         DECLARE temp : CHAR
+
+         WHILE TRUE
+            CALL printTitle()
+            INPUT "Please enter your " + type + " city: " INTO city
+            index <- getIndex(city, cities)
+            
+            IF index == -1 THEN
+               printTitle()
+               PRINT city + " does not exist." //TODO add ways to check if a city doesn't have a flight
+               INPUT "Would you like to try again? (y/n) " INTO temp
+               IF temp == 'n' THEN
+                  RETURN ""
+               ENDIF
+            ENDIF
+         ENDWHILE
+         RETURN city
+      ENDFUNCTION
+
+      FUNCTION getID(validFlights : VECTOR OF STRING) RETURNS STRING
+         PRINT "==============================="
+         //TODO
+      ENDFUNCTION
 ENDCLASS
 
 // MAIN
