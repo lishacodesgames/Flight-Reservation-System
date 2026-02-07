@@ -242,12 +242,147 @@ public:
 
 class Booker : public Flight, public Passenger {
 public:
+   void bookFlight() {
+      cout << displayOptions();
+   }
 
+   string displayOptions() {
+      int choice;
+      string temp;
+
+      printTitle();
+      do {
+         cout << "===============================\n";
+         cout << "[0] Go back\n";
+         cout << "[1] Choose a flight by ID\n";
+         cout << "[2] Book from Origin city\n";
+         cout << "===============================\n";
+         cout << "Enter your choice: ";
+         cin >> choice;
+
+         if(choice < 0 || choice > 2) {
+            printTitle();
+            cout << "Invalid choice.\n";
+         }
+      }while(choice < 0 || choice > 2);
+
+      if(choice == 0) {
+         return "";
+      } else if (choice == 1) {
+         printTitle();  
+         displayAllFlights();
+         cin.get(); cin.get();
+         cout << "===============================\n";
+         return getID(flights);
+      } else if (choice == 2) {
+         string depCity = getCity("origin"); // departure city
+         if(depCity == "")
+            return "";
+         
+         // vector work
+         vector<string> originFlights = {};
+         int count = 0;
+         for(string flightID : flights) {
+            getFlightInfo(flightID, false);
+            if(origin == depCity) {
+               originFlights.push_back(flightID);
+               count++;
+            }
+         }
+
+         //print info
+         printTitle();
+         do {
+            cout << "There are " << count << " flights departing from " << depCity << ".\n";
+            cout << "===============================\n";
+            cout << "[0] Go back\n";
+            cout << "[1] Choose a flight by ID\n";
+            cout << "[2] Book from Destination city\n";
+            cout << "===============================\n";
+            cout << "Enter your choice: ";
+            cin >> choice;
+
+            if(choice < 0 || choice > 2) {
+               printTitle();
+               cout << "Invalid choice.\n";
+            }
+         } while(choice < 0 || choice > 2);
+
+         if(choice == 0) {
+            return displayOptions();
+         } else if (choice == 1) {
+            for(string flightID : originFlights) {
+               getFlightInfo(flightID, true);
+            }
+            cin.get(); cin.get();
+            cout << "===============================\n";
+            return getID(originFlights);
+         } else if (choice == 2) {
+            string arrCity = getCity("destination"); // arrival city
+            if (arrCity == "")
+               return "";
+            
+            // vector work
+            vector<string> destinationFlights = {};
+            count = 0;
+            for(string flightID : originFlights) {
+               getFlightInfo(flightID, false);
+               if (destination == arrCity) {
+                  destinationFlights.push_back(flightID);
+                  count++;
+               }
+            }
+
+            // print info
+            printTitle();
+            cout << "There are " << count << " flights going from " << depCity << " -> " << arrCity << ".\n";
+            cout << "===============================\n";
+            for (string flightID : destinationFlights) {
+               getFlightInfo(flightID, true);
+            }
+            cin.get(); cin.get();
+            cout << "===============================\n";
+            return getID(destinationFlights);
+         }
+      }
+
+      return "";
+   }  
+   
+   string getCity(string type) {
+      string city;
+      int index;
+      char temp;
+
+      while(true) {
+         printTitle();
+         cout << "Please enter your " << type << " city: ";
+         cin >> city;
+
+         index = getIndex(city, cities);
+
+         if(index == -1) {
+            printTitle();
+            cout << city << " does not exist.\n";
+            cout << "Would you like to try again? (y/n) ";
+            cin >> temp;
+
+            if(temp == 'n')
+               return "";
+         } else break;
+      }
+      return city;
+   }
+
+   string getID (vector<string>& validFlights) {
+      return "";
+   }
 };
 
 int main() {
    srand(time(0));
    Viewer program;
+   Booker manager;
    printTitle();
    
    int choice;
@@ -270,6 +405,7 @@ int main() {
 
          case 1:
             printTitle();
+            manager.bookFlight();
             cout << "Booking a flight...";// TODO
             cin.get(); cin.get();
             break;
