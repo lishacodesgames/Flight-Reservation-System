@@ -240,10 +240,12 @@ public:
    }
 };
 
+// TODO replace cin with getline() wherever getting cities. For Rio de Janeiro
+
 class Booker : public Flight, public Passenger {
 public:
    void bookFlight() {
-      cout << displayOptions();
+      cout << "\nBooked Flight: " << displayOptions() << "\n";
    }
 
    string displayOptions() {
@@ -271,7 +273,6 @@ public:
       } else if (choice == 1) {
          printTitle();  
          displayAllFlights();
-         cin.get(); cin.get();
          cout << "===============================\n";
          return getID(flights);
       } else if (choice == 2) {
@@ -311,10 +312,10 @@ public:
          if(choice == 0) {
             return displayOptions();
          } else if (choice == 1) {
+            printTitle();
             for(string flightID : originFlights) {
                getFlightInfo(flightID, true);
             }
-            cin.get(); cin.get();
             cout << "===============================\n";
             return getID(originFlights);
          } else if (choice == 2) {
@@ -340,7 +341,6 @@ public:
             for (string flightID : destinationFlights) {
                getFlightInfo(flightID, true);
             }
-            cin.get(); cin.get();
             cout << "===============================\n";
             return getID(destinationFlights);
          }
@@ -374,8 +374,44 @@ public:
       return city;
    }
 
+   /** @brief
+    * GET ID
+    * if ID valid, return it
+    *if ID not in validFlights, check if it's in flights
+    * if ID not in both, display invalid message and somehow loop back without erasing display of all flights
+    * if ID not in validFliths but in flights, display message + "would you like to book flight <ID> anyways? (y/n)" if yes, return ID, if no, loop back
+    */
    string getID (vector<string>& validFlights) {
-      return "";
+      cout << "Enter flight ID: ";
+      cin >> ID;
+      int validIndex = getIndex(ID, validFlights);
+      if (validIndex != -1) // valid ID
+         return ID;
+      
+      if (validFlights != flights) {
+         char temp;
+         int flightIndex = getIndex(ID, flights);
+         if (flightIndex != 1) { // ID exists but doesn't match criteria
+            printTitle();
+            cout << "Flight " << ID << " does not match the selected criteria.\n";
+            cout << "Would you like to book flight " << ID << " anyways? (y/n) ";
+            cin >> temp;
+            if (temp == 'y')
+               return ID;
+            else
+               return displayOptions();
+         }
+      }
+
+      // flight doesn't exist
+      cout << "Flight " << ID << " does not exist.\n";
+      cout << "Please enter valid flight ID, or '0' to go back: "; 
+      cin >> ID;
+      if (ID == "0")
+         return displayOptions();
+      
+      return "smth wrong";
+      return getID(validFlights);
    }
 };
 
@@ -406,7 +442,7 @@ int main() {
          case 1:
             printTitle();
             manager.bookFlight();
-            cout << "Booking a flight...";// TODO
+            cout << "\nBooking a flight..."; // TODO
             cin.get(); cin.get();
             break;
 

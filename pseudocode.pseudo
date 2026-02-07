@@ -318,6 +318,7 @@ CLASS Booker INHERITS Passenger, Flight
             IF choice == 0 THEN
                RETURN displayOptions()
             ELSE IF choice == 1 THEN
+               CALL printTitle()
                FOREACH flightID IN originFlights DO
                   CALL getFlightInfo(flightID, TRUE)
                ENDFOREACH
@@ -384,14 +385,11 @@ CLASS Booker INHERITS Passenger, Flight
 
       FUNCTION getID(validFlights : VECTOR OF STRING) RETURNS STRING
          // GET ID
-         // if IDvalid, return it
+         // if ID valid, return it
          // if ID not in validFlights, check if it's in flights
          // if ID not in both, display invalid message and somehow loop back without erasing display of all flights
          // if ID not in validFliths but in flights, display message + "would you like to book flight <ID> anyways? (y/n)" if yes, return ID, if no, loop back
-         DECLARE IDvalid : BOOLEAN // delete?
-         DECLARE flightIndex : INTEGER
          DECLARE validIndex : INTEGER
-         DECLARE temp : CHAR
 
          INPUT "Enter flight ID: " INTO ID
          validIndex <- getIndex(ID, validFlights)
@@ -399,15 +397,19 @@ CLASS Booker INHERITS Passenger, Flight
             RETURN ID // valid ID, can book
          ENDIF
 
-         flightIndex <- getIndex(ID, flights)
-         IF flightIndex != -1 THEN // ID exists but doesn't match criteria
-            CALL printTitle()
-            PRINT "Flight " + ID + " does not match the selected criteria."
-            PRINT "Would you like to book flight " + ID + " anyways? (y/n) " INTO temp
-            IF temp == 'y' THEN
-               RETURN ID
-            ELSE
-               RETURN displayOptions()
+         IF validFlights != flights THEN
+            DECLARE temp : CHAR
+            DECLARE flightIndex : INTEGER
+            flightIndex <- getIndex(ID, flights)
+            IF flightIndex != -1 THEN // ID exists but doesn't match criteria
+               CALL printTitle()
+               PRINT "Flight " + ID + " does not match the selected criteria."
+               PRINT "Would you like to book flight " + ID + " anyways? (y/n) " INTO temp
+               IF temp == 'y' THEN
+                  RETURN ID
+               ELSE
+                  RETURN displayOptions()
+               ENDIF
             ENDIF
          ENDIF
 
@@ -417,7 +419,7 @@ CLASS Booker INHERITS Passenger, Flight
          IF ID == "0" THEN
             RETURN displayOptions()
          ENDIF
-         
+
          RETURN getID(validFlights) // recursion to loop back
       ENDFUNCTION
 ENDCLASS
