@@ -5,6 +5,8 @@
 #include <ctime>
 using namespace std;
 
+//!!!!! FIX FILE SYSTEM
+
 #pragma region FUNCTIONS
 
 int getIndex(string& element, vector<string>& vec) {
@@ -43,7 +45,7 @@ public:
       string id;
       vector<string> flights;
 
-      ifstream txtFlights("flights.txt");
+      ifstream txtFlights("text-files/flights.txt");
       while(getline(txtFlights, id)) {
          flights.push_back(id);
       }
@@ -56,7 +58,7 @@ public:
       string city;
       vector<string> cities;
 
-      ifstream txtCities("cities.txt");
+      ifstream txtCities("text-files/cities.txt");
       while(getline(txtCities, city)) {
          cities.push_back(city);
       }
@@ -108,11 +110,11 @@ public:
 
       #pragma region fileManagement
       flights.push_back(ID);
-      ofstream txtFlights("flights.txt", ios::app);
+      ofstream txtFlights("text-files/flights.txt", ios::app);
       txtFlights << ID << "\n";
       txtFlights.close();
 
-      txtFlights.open("flightsInfo.txt", ios::app);
+      txtFlights.open("text-files/flightsInfo.txt", ios::app);
       txtFlights << ID << "|" << origin << "," << destination << "|" << emptySeats << "/" << totalSeats << "|" << departureTime << "|" << gate << "|" << terminal << "\n";
       txtFlights.close();
       #pragma endregion
@@ -200,7 +202,7 @@ public:
 
       #pragma region getPassengerInfo
       bool passengerExists = false;
-      ifstream passengers("passengers.txt");
+      ifstream passengers("text-files/passengers.txt");
       while(getline(passengers, this->name, ',')){
          if(name != nameInput) {
             getline(passengers, tempString);
@@ -240,9 +242,40 @@ public:
    }
 };
 
+// TODO organise all .txt's into a text files folder
 // TODO replace cin with getline() wherever getting cities. For Rio de Janeiro
+// TODO add feedback when displayOptions() returns with ""
+// TODO move not-needed functions to private/protected
+// TODO EVERYWHERE ada do-while for (y/n) validation
+// TODO what to do if no flights?
+/// @bug when ID == s, it is valid fsr TODO add bug to notion
 
 class Booker : public Flight, public Passenger {
+private:
+   string getCity(string type) {
+      string city;
+      int index;
+      char temp;
+
+      while(true) {
+         printTitle();
+         cout << "Please enter your " << type << " city: ";
+         cin >> city;
+
+         index = getIndex(city, cities);
+
+         if(index == -1) {
+            printTitle();
+            cout << city << " does not exist.\n";
+            cout << "Would you like to try again? (y/n) ";
+            cin >> temp;
+
+            if(temp == 'n')
+               return "";
+         } else break;
+      }
+      return city;
+   }
 public:
    void bookFlight() {
       cout << "\nBooked Flight: " << displayOptions() << "\n";
@@ -273,9 +306,9 @@ public:
       } else if (choice == 1) {
          printTitle();  
          displayAllFlights();
-         cout << "===============================\n";
          return getID(flights);
       } else if (choice == 2) {
+         #pragma region origin
          string depCity = getCity("origin"); // departure city
          if(depCity == "")
             return "";
@@ -294,6 +327,7 @@ public:
          //print info
          printTitle();
          do {
+            // TODO if only 1 flight exists, change the prompt to "Would you like to book <flight>?"
             cout << "There are " << count << " flights departing from " << depCity << ".\n";
             cout << "===============================\n";
             cout << "[0] Go back\n";
@@ -316,9 +350,11 @@ public:
             for(string flightID : originFlights) {
                getFlightInfo(flightID, true);
             }
-            cout << "===============================\n";
             return getID(originFlights);
-         } else if (choice == 2) {
+         } 
+         #pragma endregion
+         #pragma region destination
+         else if (choice == 2) {
             string arrCity = getCity("destination"); // arrival city
             if (arrCity == "")
                return "";
@@ -336,43 +372,19 @@ public:
 
             // print info
             printTitle();
+            // TODO if only 1 flight exists, change the prompt to "Would you like to book <flight>?"
             cout << "There are " << count << " flights going from " << depCity << " -> " << arrCity << ".\n";
             cout << "===============================\n";
             for (string flightID : destinationFlights) {
                getFlightInfo(flightID, true);
             }
-            cout << "===============================\n";
             return getID(destinationFlights);
+            #pragma endregion
          }
       }
 
       return "";
    }  
-   
-   string getCity(string type) {
-      string city;
-      int index;
-      char temp;
-
-      while(true) {
-         printTitle();
-         cout << "Please enter your " << type << " city: ";
-         cin >> city;
-
-         index = getIndex(city, cities);
-
-         if(index == -1) {
-            printTitle();
-            cout << city << " does not exist.\n";
-            cout << "Would you like to try again? (y/n) ";
-            cin >> temp;
-
-            if(temp == 'n')
-               return "";
-         } else break;
-      }
-      return city;
-   }
 
    /** @brief
     * GET ID
@@ -382,18 +394,18 @@ public:
     * if ID not in validFliths but in flights, display message + "would you like to book flight <ID> anyways? (y/n)" if yes, return ID, if no, loop back
     */
    string getID (vector<string>& validFlights) {
-      cout << "Enter flight ID: ";
+      cout << "\n===============================";
+      cout << "\nEnter flight ID: ";
       cin >> ID;
       int validIndex = getIndex(ID, validFlights);
       if (validIndex != -1) // valid ID
          return ID;
       
+      char temp;
       if (validFlights != flights) {
-         char temp;
          int flightIndex = getIndex(ID, flights);
-         if (flightIndex != 1) { // ID exists but doesn't match criteria
-            printTitle();
-            cout << "Flight " << ID << " does not match the selected criteria.\n";
+         if (flightIndex != -1) { // ID exists but doesn't match criteria
+            cout << "\nFlight " << ID << " does not match the selected criteria.\n";
             cout << "Would you like to book flight " << ID << " anyways? (y/n) ";
             cin >> temp;
             if (temp == 'y')
@@ -405,12 +417,12 @@ public:
 
       // flight doesn't exist
       cout << "Flight " << ID << " does not exist.\n";
-      cout << "Please enter valid flight ID, or '0' to go back: "; 
-      cin >> ID;
-      if (ID == "0")
+      cout << "Would you like to try again? (y/n) "; 
+      cin >> temp;
+      if (temp == 'n')
          return displayOptions();
       
-      return "smth wrong";
+      cout << "\n";
       return getID(validFlights);
    }
 };
