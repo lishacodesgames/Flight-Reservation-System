@@ -5,12 +5,15 @@
 #include <ctime>
 using namespace std;
 
-//!!!!! FIX FILE SYSTEM
+// TODO separate all fstream work into their own functions
 // TODO in generating flights & passengers, check if starting from \n and never leaving extra \n behind
+/** @help
+ * where does FlightStorage::getFlight() get index from? 
+ */
 
 #pragma region FUNCTIONS
 
-int getIndex(string& element, vector<string>& vec) {
+int getIndex(string& element, vector<string>& vec) { // done
    for(int i = 0; i < vec.size(); i++){
       if(element == vec[i]) 
          return i;
@@ -32,7 +35,7 @@ void printTitle() {
 
 #pragma endregion
 
-class Airport {
+class Airport { //done
 protected:
    vector<string> flights = {};
    vector<string> cities = {};
@@ -42,7 +45,7 @@ public:
       cities = getCities();
    }
 
-   vector<string> getFlights() {
+   vector<string> getFlights() { //done
       string id;
       vector<string> flights;
 
@@ -55,7 +58,7 @@ public:
       return flights;
    }
 
-   vector<string> getCities() {
+   vector<string> getCities() { //done
       string city;
       vector<string> cities;
 
@@ -70,16 +73,16 @@ public:
 };
 
 class Flight : public Airport {
-protected:
-   const int MIN_SEATS = 50;
-   const int MAX_SEATS = 500;
+   protected: //done
+      const int MIN_SEATS = 50; 
+      const int MAX_SEATS = 500;
 
-   string ID;
-   string origin, destination;
-   int emptySeats, totalSeats;
-   string departureTime;
-   char gate;
-   short terminal;
+      string ID;
+      string origin, destination;
+      int emptySeats, totalSeats;
+      string departureTime;
+      char gate;
+      short terminal;
 public:
    void generateRandomFlight() {
       #pragma region generateValues
@@ -109,7 +112,7 @@ public:
       terminal = rand() % 5 + 1;
       #pragma endregion
 
-      #pragma region fileManagement
+      #pragma region fileManagement //done
       flights.push_back(ID);
       ofstream txtFlights("text-files/flights.txt", ios::app);
       txtFlights << "\n" << ID;
@@ -131,7 +134,7 @@ public:
     * prints them in a nice format (if needed)
     */
    //TODO add a way to filter flight with origin/destination/time
-   bool getFlightInfo(string id, bool toBePrinted) {
+   bool getFlightInfo(string id, bool toBePrinted) { //done
       #pragma region confirmID
       int index = getIndex(id, flights);
       if(index == -1) {
@@ -163,7 +166,7 @@ public:
 
       getline(flightsInfo, tempString, '|');
       gate = tempString[0];
-      getline(flightsInfo, tempString, '|');
+      getline(flightsInfo, tempString);
       terminal = stoi(tempString);
 
       flightsInfo.close();
