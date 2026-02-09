@@ -441,7 +441,6 @@ int main() {
    srand(time(0));
    Viewer program;
    Booker manager;
-   printTitle();
    
    int choice;
    while(true) {
@@ -506,6 +505,7 @@ int main() {
             program.displayAllFlights();
             cin.get(); cin.get();
             break;
+            
          default:
             printTitle();
             cout << "Invalid Choice.";

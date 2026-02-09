@@ -12,8 +12,8 @@ bool displayBoardingPass() {
    FlightStorage Fstorage;
    Passenger p;
    Flight f;
+   
    printTitle();
-
    std::cout << "Enter name of passenger: ";
    getline(std::cin, name);
 
@@ -34,4 +34,6 @@ bool displayBoardingPass() {
    << "TIME: " << f.departureTime << "\n"
    << "FLIGHT: " << p.bookedFlight << "\n"
    << "GATE " << f.gate << "\t TERMINAL " << f.terminal << "\n";
+   
+   return true;
 }

@@ -1,4 +1,5 @@
 #include "ui/FlightView.h"
+#include "ui/Menu.h"
 #include "core/Flight.h"
 #include "storage/FlightStorage.h"
 #include <vector>
@@ -6,6 +7,8 @@
 #include <iostream>
 
 void printFlightInfo(Flight& f) {
+   printTitle();
+
    std::cout << "Flight " << f.ID << "\n"
    << f.origin << " -> " << f.destination << "\n"
    << "Seats available: " << f.emptySeats << "/" << f.totalSeats << "\n"
@@ -17,6 +20,8 @@ void displayAllFlights() {
    FlightStorage storage;
    Flight f;
    std::vector<std::string> flights = storage.getFlightIDs();
+
+   printTitle();
    for(std::string id : flights) {
       storage.getFlightInfo(id, f);
       printFlightInfo(f);
