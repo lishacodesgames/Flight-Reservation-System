@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <ctime>
 
-enum class Choice {Exit, Book, ViewFlight, ViewBoardingPass, ViewAllFlights}; // own class?
+enum class Choice {Exit, Book, ViewFlight, ViewBoardingPass, ViewAllFlights};
 
 int main() {
    std::srand(time(0));
@@ -24,7 +24,8 @@ int main() {
             return 0;
 
          case Choice::Book: {
-            //TODO
+            std::cout << "Booking..."; //TODO
+            std::cin.get();
             break;
          }
 
@@ -37,8 +38,8 @@ int main() {
             while(shouldContinue) {
                id = getIDforShow();
                success = storage.getFlightInfo(id, f);
-               std::cin.get();
                if(success) {
+                  printTitle();
                   printFlightInfo(f);
                   std::cin.get();
                   shouldContinue = false;
@@ -54,10 +55,11 @@ int main() {
             bool success, shouldContinue = true;
             while (shouldContinue) {
                success = displayBoardingPass();
-               std::cin.get();
-
-               if(success)
+               
+               if(success) {
+                  std::cin.get();
                   shouldContinue = false;
+               }
                else
                   shouldContinue = promptTryAgain();
             }

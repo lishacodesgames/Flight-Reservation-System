@@ -21,7 +21,7 @@ bool displayBoardingPass() {
 
    if(!passengerExists) {
       printTitle();
-      std::cout << name << " does not have a boarding pass.\n";
+      std::cout << "\"" << name << "\" does not have a boarding pass.\n";
       return false;
    }
 
@@ -34,6 +34,7 @@ bool displayBoardingPass() {
    << "TIME: " << f.departureTime << "\n"
    << "FLIGHT: " << p.bookedFlight << "\n"
    << "GATE " << f.gate << "\t TERMINAL " << f.terminal << "\n";
+   std::cout << "===============================\n";
    
    return true;
 }

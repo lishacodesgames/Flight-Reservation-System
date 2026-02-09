@@ -7,13 +7,12 @@
 #include <iostream>
 
 void printFlightInfo(Flight& f) {
-   printTitle();
-
    std::cout << "Flight " << f.ID << "\n"
    << f.origin << " -> " << f.destination << "\n"
    << "Seats available: " << f.emptySeats << "/" << f.totalSeats << "\n"
    << "Departing at " << f.departureTime << "\n"
-   << "Gate " << f.gate << "\t Terminal " << f.terminal << "\n\n";
+   << "Gate " << f.gate << "\t Terminal " << f.terminal << "\n";
+   std::cout << "===============================\n";
 }
 
 void displayAllFlights() {

@@ -50,6 +50,7 @@
       if (index == -1)
          return false;
 
+      //show ID
       std::string temp;
       std::ifstream txtFlights("../text-files/flightsInfo.txt");
       

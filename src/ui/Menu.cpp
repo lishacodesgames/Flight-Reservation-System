@@ -11,12 +11,13 @@ void printTitle() {
 
    std::cout << "===============================\n";
    std::cout << "  WELCOME TO LISHA'S AIRPORT!  \n";
-   std::cout << "===============================\n\n";
+   std::cout << "===============================\n";
 }
 
 int MainMenu() {
+   std::string input;
    int choice = -1;
-   bool invalidChoice = (choice < 0 || choice > 4);
+   bool invalidChoice;
    printTitle();
    do {
       std::cout << "===============================\n";
@@ -27,11 +28,28 @@ int MainMenu() {
       std::cout << "[4] View all flights\n";
       std::cout << "===============================\n";
       std::cout << "Enter your choice: ";
-      std::cin >> choice;
+      getline(std::cin, input);
 
+      // error1: input not a number
+      try {
+         choice = std::stoi(input);
+      } catch(std::invalid_argument& e) {
+         printTitle();
+         std::cout << "\nPlease enter a number.\n";
+         invalidChoice = true;
+         continue;
+      } catch(std::out_of_range& e) {
+         printTitle();
+         std::cout << "\nWhy would you do that? \n";
+         invalidChoice = true;
+         continue;
+      }
+
+      //error2: incorrect number
+      invalidChoice = (choice < 0 || choice > 4);
       if (invalidChoice) {
          printTitle();
-         std::cout << "Invalid choice.\n";
+         std::cout << "\nInvalid choice.\n";
       }
    } while (invalidChoice);
 
@@ -49,8 +67,11 @@ std::string getIDforShow() {
 
 bool promptTryAgain() {
    std::string ans;
+   std::cout << "\nInvalid input.";
    std::cout << "\nTry again? (y/n) ";
    getline(std::cin, ans);
+   if (ans == "") //getline read an input buffer leftover from std::cin.. idk where TODO FIX
+      getline(std::cin, ans);
 
    for(char& ch : ans) {
       ch = std::toupper(static_cast<unsigned char>(ch)); // to avoid undefined behaviour with non-ASCII characters
@@ -60,6 +81,7 @@ bool promptTryAgain() {
       return true;
    else if (ans == "N" || ans == "NO")
       return false;
-   else
+   else {
       return promptTryAgain();
+   }
 }
