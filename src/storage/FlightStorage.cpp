@@ -5,9 +5,7 @@
 #include <string>
 #include <fstream>
 
-class FlightStorage {
-public:
-   std::vector<std::string> getFlightIDs() {
+   std::vector<std::string> FlightStorage::getFlightIDs() {
       std::string ID;
       std::vector<std::string> flights = {};
 
@@ -20,7 +18,7 @@ public:
       return flights;
    }
 
-   std::vector<std::string> getCities() {
+   std::vector<std::string> FlightStorage::getCities() {
       std::string city;
       std::vector<std::string> cities = {};
 
@@ -33,7 +31,7 @@ public:
       return cities;
    }
 
-   void saveFlight(Flight& flight) {
+   void FlightStorage::saveFlight(Flight& flight) {
       std::ofstream txtFlights("../text-files/flights.txt", std::ios::app); //?
       txtFlights << "\n" << flight.ID;
       txtFlights.close();
@@ -46,7 +44,7 @@ public:
       txtFlightsInfo.close();
    }
 
-   bool getFlightInfo(const std::string& ID, Flight& outputFlight) {
+   bool FlightStorage::getFlightInfo(const std::string& ID, Flight& outputFlight) {
       //confirm ID
       int index = getIndex(ID, getFlightIDs());
       if (index == -1)
@@ -76,4 +74,3 @@ public:
 
       return true;
    }
-};

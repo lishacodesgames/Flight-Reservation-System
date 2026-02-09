@@ -3,8 +3,8 @@
 #include <string>
 
 struct Flight {
-   const int MIN_SEATS = 50;
-   const int MAX_SEATS = 500;
+   static constexpr int MIN_SEATS = 50;
+   static constexpr int MAX_SEATS = 500;
 
    std::string ID;
    std::string origin, destination;
