@@ -15,12 +15,16 @@ echo Building Air Route System
 ::   ../src/frontend/*.cpp ^ //not needed yet, as raylib not implemented yet
 
 :: Detect location
-if exist src/main.cpp (
+if exist src\main.cpp (
    echo Compiling from repo root directory.
    set "BASE=."
-   set "OUT=build/AirRouteSystem.exe"
-) else if exist ../src/main.cpp (
+   set "OUT=build\Windows\AirRouteSystem.exe"
+) else if exist ..\src\main.cpp (
    echo Compiling from build directory.
+   set "BASE=.."
+   set "OUT=Windows\AirRouteSystem.exe"
+) else if exist ..\..\src\main.cpp (
+   echo Compiling from build\Windows directory.
    set "BASE=.."
    set "OUT=AirRouteSystem.exe"
 ) else (
