@@ -14,12 +14,8 @@ void BookingService::bookFlight() {
       std::cout << "FLIGHT BOOKED: " << ID;
 }
 
-/**
- * @param validator "origin" OR "destination"
- * @param targetCity depCity (departure, origin) OR arrCity (arrival, destination)
- * @return vector of flight IDs containing targetCity as validator
- */
-std::vector<std::string> BookingService::getValidFlights(std::string validator, std::string targetCity) {
+/// @return originFlights
+std::vector<std::string> BookingService::getValidFlights(std::string depCity) {
    FlightStorage storage;
    Flight f;
    std::vector<std::string> allFlights = storage.getFlightIDs();
@@ -27,22 +23,26 @@ std::vector<std::string> BookingService::getValidFlights(std::string validator, 
    std::vector<std::string> originFlights = {};
    for (std::string id : allFlights) {
       storage.getFlightInfo(id, f);
-      if (f.origin == targetCity)
+      if (f.origin == depCity)
          originFlights.push_back(id);
    }
-   
-   if (validator == "origin")
-      return originFlights;
-   else if (validator == "destination") {
-      std::vector<std::string> destinationFlights = {};
-      for (std::string id : originFlights) {
-         storage.getFlightInfo(id, f);
-         if (f.destination == targetCity)
-            destinationFlights.push_back(id);
-      }
-      return destinationFlights;
-   }
-    
-   return {}; // invalid validator
+
+   return originFlights;
 }
 
+/// @return destinationFlights
+std::vector<std::string> BookingService::getValidFlights(std::string depCity, std::string arrCity) {
+   FlightStorage storage;
+   Flight f;
+   std::vector<std::string> allFlights = storage.getFlightIDs();
+   std::vector<std::string> originFlights = getValidFlights(depCity);
+
+   std::vector<std::string> destinationFlights = {};
+   for (std::string id : originFlights) {
+      storage.getFlightInfo(id, f);
+      if (f.destination == arrCity)
+         destinationFlights.push_back(id);
+   }
+
+   return destinationFlights;
+}

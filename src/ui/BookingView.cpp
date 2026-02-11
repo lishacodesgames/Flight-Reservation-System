@@ -71,7 +71,6 @@ int OriginChoiceMenu() {
    int choice;
    bool invalidChoice;
 
-   printTitle();
    do {
       std::cout << "===============================\n";
       std::cout << "[0] Go back\n";
@@ -109,14 +108,15 @@ int OneFlightMenu(std::string prompt, std::string flightID) {
    std::string input;
    int choice;
    bool invalidChoice = true;
+   printTitle();
    do {   
-      printTitle();
       std::cout << "There is 1 flight " + prompt << "\n";
       std::cout << "===============================\n";
       std::cout << "[0] Go back\n";
       std::cout << "[1] See flight details\n";
       std::cout << "[2] Book the flight\n";
       std::cout << "===============================\n";
+      std::cout << "Enter your choice: ";
       getline(std::cin, input);
 
       // error1: input not a number
@@ -157,7 +157,7 @@ std::string displayBookingOptions() {
             return "";
          
          BookingService booker;
-         std::vector<std::string> originFlights = booker.getValidFlights("origin", depCity);
+         std::vector<std::string> originFlights = booker.getValidFlights(depCity);
 
          switch(originFlights.size()) {
             case 0:
@@ -165,51 +165,48 @@ std::string displayBookingOptions() {
                std::cin.get();
                return "0";
             
-               case 1: {
-                  int menuChoice = OneFlightMenu("departing from " + depCity, originFlights[0]);
-                  bool toContinue;
+            case 1: {
+               int menuChoice = OneFlightMenu("departing from " + depCity, originFlights[0]);
+               bool toContinue;
 
-                  do {
-                     switch (menuChoice) {
-                        case 0:
-                           return displayBookingOptions();
-                        
-                        case 1: {
-                           FlightStorage storage;
-                           Flight f;
-                           std::string input;
+               while (true) {
+                  switch (menuChoice) {
+                     case 0:
+                        return displayBookingOptions();
+                     
+                     case 1: {
+                        FlightStorage storage;
+                        Flight f;
+                        std::string input;
 
-                           printTitle();
-                           storage.getFlightInfo(originFlights[0], f);
-                           printFlightInfo(f);
-                           std::cin.get();
-                           while (true) {
-                              std::cout << "Would you like to book this flight? (y/n) ";
-                              getline(std::cin, input);
+                        printTitle();
+                        storage.getFlightInfo(originFlights[0], f);
+                        printFlightInfo(f);
+                        std::cin.get();
+                        while (true) {
+                           std::cout << "Would you like to book this flight? (y/n) ";
+                           getline(std::cin, input);
 
-                              if (input == "y") {
-                                 menuChoice == 2;
-                                 break;
-                              }
-                              else if (input == "n") {
-                                 return displayBookingOptions();
-                              }
-                              else {
-                                 std::cout << "Invalid input.\n";
-                              }
+                           if (input == "y")
+                              return originFlights[0];
+                           else if (input == "n")
+                              return displayBookingOptions();
+                           else {
+                              std::cout << "Invalid input.\n";
                            }
-                           break;
                         }
-
-                        case 2:
-                           return originFlights[0];
+                        break;
                      }
-                  } while (toContinue);
+
+                     case 2:
+                        return originFlights[0];
+                     }
+                  };
                   break;
                }
             default:
+               printTitle();
                std::cout << "There are " << originFlights.size() << " flights departing from " << depCity << ".\n";
-               std::cout << "===============================\n";
                break;
          }
 
@@ -235,7 +232,7 @@ std::string displayBookingOptions() {
                if (arrCity == "") // user decided to quit
                   return "";
                
-               std::vector<std::string> destinationFlights = booker.getValidFlights("destination", arrCity);
+               std::vector<std::string> destinationFlights = booker.getValidFlights(depCity, arrCity);
 
                switch(destinationFlights.size()) {
                   case 0:
@@ -247,7 +244,7 @@ std::string displayBookingOptions() {
                      int menuChoice = OneFlightMenu("going from " + depCity + " -> " + arrCity, destinationFlights[0]);
                      bool toContinue;
 
-                     do {
+                     while (true) {
                         switch (menuChoice) {
                            case 0:
                               return displayBookingOptions();
@@ -266,8 +263,7 @@ std::string displayBookingOptions() {
                                  getline(std::cin, input);
 
                                  if (input == "y") {
-                                    menuChoice == 2;
-                                    break;
+                                    return destinationFlights[0];
                                  }
                                  else if (input == "n") {
                                     return displayBookingOptions();
@@ -282,7 +278,7 @@ std::string displayBookingOptions() {
                            case 2:
                               return originFlights[0];
                         }
-                     } while (toContinue);
+                     };
                      break;
                   }
                   default:

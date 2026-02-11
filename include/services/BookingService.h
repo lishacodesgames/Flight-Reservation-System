@@ -5,5 +5,6 @@
 class BookingService {
 public:
    void bookFlight();
-   std::vector<std::string> getValidFlights(std::string validator, std::string targetCity);
+   std::vector<std::string> getValidFlights(std::string depCity);
+   std::vector<std::string> getValidFlights(std::string depCity, std::string arrCity);
 };
