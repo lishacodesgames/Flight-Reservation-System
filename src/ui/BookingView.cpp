@@ -282,7 +282,8 @@ std::string displayBookingOptions() {
                      break;
                   }
                   default:
-                     std::cout << "There are " << destinationFlights.size() << " flights departing from " << depCity << ".\n";
+                     printTitle();
+                     std::cout << "There are " << destinationFlights.size() << " flights going from " << depCity << " -> " << arrCity << ".\n";
                      std::cout << "===============================\n";
                      break;
                }
@@ -312,8 +313,15 @@ std::string displayBookingOptions() {
 std::string getID(std::vector<std::string> validFlights) {
    std::string ID;
 
-   std::cout << "\n===============================";
-   std::cout << "\nEnter flight ID: ";
+   if(validFlights.size() == 0) {
+      std::cout << "Something went wrong.\n";
+      std::cin.get();
+      return displayBookingOptions();
+   }
+
+   // flight list ends with "===\n"
+   std::cout << "===============================\n";
+   std::cout << "Enter flight ID: ";
    getline(std::cin, ID);
 
    int validIndex = getIndex(ID, validFlights);
