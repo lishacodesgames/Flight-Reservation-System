@@ -25,6 +25,7 @@ if exist src/main.cpp (
    set "OUT=AirRouteSystem.exe"
 ) else (
    echo Error: main.cpp not found in src directory.
+   pause
    exit /b 1
 )
 :: Detect if appended "quick" aka skip the semantics and just compile it in one go
@@ -57,6 +58,7 @@ for %%f in (%BASE%\src\services\*.cpp) do (
 g++ -std=c++17 -c %BASE%\src\services\*.cpp -I%BASE%\include
 if %ERRORLEVEL% neq 0 (
    echo Compilation failed for services with error code %ERRORLEVEL%.
+   pause
    exit /b 1
 )
 
@@ -69,6 +71,7 @@ for %%f in (%BASE%\src\storage\*.cpp) do (
 g++ -std=c++17 -c %BASE%\src\storage\*.cpp -I%BASE%\include
 if %ERRORLEVEL% neq 0 (
    echo Compilation failed for storage with error code %ERRORLEVEL%.
+   pause
    exit /b 1
 )
 
@@ -81,6 +84,7 @@ for %%f in (%BASE%\src\ui\*.cpp) do (
 g++ -std=c++17 -c %BASE%\src\ui\*.cpp -I%BASE%\include
 if %ERRORLEVEL% neq 0 (
    echo Compilation failed for ui with error code %ERRORLEVEL%.
+   pause
    exit /b 1
 )
 
@@ -93,6 +97,7 @@ for %%f in (%BASE%\src\utils\*.cpp) do (
 g++ -std=c++17 -c %BASE%\src\utils\*.cpp -I%BASE%\include
 if %ERRORLEVEL% neq 0 (
    echo Compilation failed for utils with error code %ERRORLEVEL%.
+   pause
    exit /b 1
 )
 
@@ -102,6 +107,7 @@ echo Compiling MAIN
 g++ -std=c++17 -c %BASE%\src\main.cpp -I%BASE%\include
 if %ERRORLEVEL% neq 0 (
    echo Compilation failed for main.cpp with error code %ERRORLEVEL%.
+   pause
    exit /b 1
 )
 

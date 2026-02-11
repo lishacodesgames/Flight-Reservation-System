@@ -1,8 +1,0 @@
-g++ -std=c++17 src/main.cpp src/core/*.cpp src/services/*.cpp src/storage/*.cpp src/ui/*.cpp src/utils/*.cpp -Iinclude -o build/air_route.exe
-WINDOWS RUN COMMAND: with .exe
-MAC/LINUX RUN COMMAND: without .exe
-
-note: does not compile frontend/ or raylib at all
-
--> just made a .bat file lol so easy
--> bcz i wanna run with cmd and cmd doesn't expand *.cpp and also running "build.bat" is much easier than this whole command

@@ -18,7 +18,7 @@ std::string getCity(std::string type) {
    bool repeat = false;
 
    printTitle();
-   std::cout << "\nEnter your " + type + " city: ";
+   std::cout << "Enter your " + type + " city: ";
    getline(std::cin, city);
 
    index = getIndex(city, storage.getCities());
@@ -147,8 +147,6 @@ std::string displayBookingOptions() {
          return "";
       case BookingChoice::byID: {
          FlightStorage storage;
-
-         displayAllFlights();
          return getID(storage.getFlightIDs());
       }
       case BookingChoice::byOrigin: {
@@ -221,10 +219,6 @@ std::string displayBookingOptions() {
                Flight f;
 
                printTitle();
-               for (std::string id : originFlights) {
-                  storage.getFlightInfo(id, f);
-                  printFlightInfo(f);
-               }
                return getID(originFlights);
             }
             case BookingChoice::byDestination: {
@@ -288,12 +282,7 @@ std::string displayBookingOptions() {
                      break;
                }
 
-               FlightStorage storage;
-               Flight f;
-               for (std::string id : destinationFlights) {
-                  storage.getFlightInfo(id, f);
-                  printFlightInfo(f);
-               }
+               printTitle();
                return getID(destinationFlights);
             }
          }
@@ -311,14 +300,26 @@ std::string displayBookingOptions() {
  * @brief 3. if ID doesn't exist, recursive call to re-prompt ID 
  */
 std::string getID(std::vector<std::string> validFlights) {
-   std::string ID;
-
    if(validFlights.size() == 0) {
       std::cout << "Something went wrong.\n";
       std::cin.get();
       return displayBookingOptions();
    }
-
+   
+   // print flights
+   FlightStorage storage;
+   Flight f;
+   
+   if(validFlights == storage.getFlightIDs()) 
+      displayAllFlights();
+   else {
+      for (std::string id : validFlights) {
+         storage.getFlightInfo(id, f);
+         printFlightInfo(f);
+      }
+   }
+   
+   std::string ID;
    // flight list ends with "===\n"
    std::cout << "===============================\n";
    std::cout << "Enter flight ID: ";
@@ -329,7 +330,6 @@ std::string getID(std::vector<std::string> validFlights) {
       return ID;
 
    std::string temp;
-   FlightStorage storage;
    std::vector<std::string> allFlights = storage.getFlightIDs();
    if(validFlights != allFlights) {
       int flightIndex = getIndex(ID, allFlights);
@@ -343,6 +343,7 @@ std::string getID(std::vector<std::string> validFlights) {
          else if (temp == "n")
             return displayBookingOptions();
          else {
+            printTitle();
             std::cout << "Invalid input.\n";
             return getID(validFlights);
          }
@@ -350,11 +351,12 @@ std::string getID(std::vector<std::string> validFlights) {
    }
 
    // flight doesn't exist
-   std::cout << "\nFlight " << ID << " does not exist.";
-   bool tryAgain = promptTryAgain();
+   bool tryAgain = promptTryAgain("\nFlight " + ID + " does not exist.");
 
-   if(tryAgain)
+   if(tryAgain) {
+      printTitle();
       return getID(validFlights);
+   }
    else
       return displayBookingOptions();
 }
