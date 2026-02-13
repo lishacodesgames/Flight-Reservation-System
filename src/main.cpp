@@ -7,6 +7,9 @@
 #include "core/Flight.h"
 #include <cstdlib>
 #include <ctime>
+#include <iostream> // for invalid args
+
+/// @todo TODO fix storage declarations
 
 enum class Choice {Exit, Book, ViewFlight, ViewBoardingPass, ViewAllFlights};
 
@@ -16,6 +19,7 @@ int main(int argc, char* argv[]) {
       return 1;
    }
    std::string BASE_PATH = argv[1];
+   FlightStorage storage(BASE_PATH);
 
    std::srand(time(0));
    //declarations TODO
@@ -74,7 +78,7 @@ int main(int argc, char* argv[]) {
          }
 
          case Choice::ViewAllFlights: {
-            displayAllFlights();
+            displayAllFlights(storage);
             std::cin.get();
             break;
          }

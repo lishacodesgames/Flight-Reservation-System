@@ -6,6 +6,8 @@
 #include "storage/FlightStorage.h"
 #include <iostream>
 
+/// @todo TODO fix storage declarations
+
 bool displayBoardingPass() {
    std::string temp, name;
    PassengerStorage Pstorage;

@@ -1,9 +1,6 @@
 #pragma once
 #include "core/Flight.h"
-#include "storage/FlightStorage.h"
-#include <vector>
-#include <string>
-#include <iostream>
+#include "Storage/FlightStorage.h"
 
 void printFlightInfo(Flight& f);
-void displayAllFlights();
+void displayAllFlights(FlightStorage& storage);

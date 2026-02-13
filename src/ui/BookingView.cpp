@@ -7,8 +7,8 @@
 #include "utils/ParseUtils.h"
 #include "utils/VectorUtils.h"
 #include <iostream>
-#include <string>
-#include <vector>
+
+/// @todo TODO fix storage declarations
 
 /// @param type "origin" OR "destination" gets printed in the prompt
 std::string getCity(std::string type) {

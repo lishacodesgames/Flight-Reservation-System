@@ -2,13 +2,13 @@
 #include "core/Flight.h"
 #include "storage/FlightStorage.h"
 #include "ui/BookingView.h"
-#include <string>
-#include <vector>
 
-#include <iostream> //REMOVE REMOVE TODO TODO ATTENTIONS
+/// @todo TODO fix storage declarations
+
+#include <iostream> /// @todo TODO REMOVE!
 void BookingService::bookFlight() {
    std::string ID = displayBookingOptions();
-   if(ID == "" || ID == "0")
+   if (ID == "" || ID == "0")
       std::cout << "FLIGHT WAS NOT BOOKED.";
    else 
       std::cout << "FLIGHT BOOKED: " << ID;

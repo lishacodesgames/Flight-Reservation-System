@@ -1,7 +1,6 @@
 #include "ui/Menu.h"
 #include "utils/ParseUtils.h"
 #include <iostream>
-#include <string>
 
 void printTitle() {
    #if defined(_WIN32)

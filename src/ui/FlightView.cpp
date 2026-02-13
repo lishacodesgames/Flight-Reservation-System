@@ -1,10 +1,11 @@
 #include "ui/FlightView.h"
 #include "ui/Menu.h"
-#include "core/Flight.h"
 #include "storage/FlightStorage.h"
 #include <vector>
 #include <string>
 #include <iostream>
+
+/// @todo TODO fix storage declarations
 
 void printFlightInfo(Flight& f) {
    std::cout << "Flight " << f.ID << "\n"
@@ -15,8 +16,7 @@ void printFlightInfo(Flight& f) {
    std::cout << "===============================\n";
 }
 
-void displayAllFlights() {
-   FlightStorage storage;
+void displayAllFlights(FlightStorage& storage) {
    Flight f;
    std::vector<std::string> flights = storage.getFlightIDs();
 
