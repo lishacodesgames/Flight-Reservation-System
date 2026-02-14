@@ -1,0 +1,4 @@
+# excluding C files from being included in language stats
+include/frontend/raylib.h linguist-vendored
+include/frontend/raymath.h linguist-vendored
+include/frontend/rlgl.h linguist-vendored
