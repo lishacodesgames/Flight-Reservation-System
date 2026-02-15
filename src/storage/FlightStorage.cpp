@@ -1,77 +1,86 @@
 #include "storage/FlightStorage.h"
-#include "core/Flight.h"
 #include "utils/VectorUtils.h"
 #include <vector>
 #include <string>
 #include <fstream>
 
-   std::vector<std::string> FlightStorage::getFlightIDs() {
-      std::string ID;
-      std::vector<std::string> flights = {};
+FlightStorage::FlightStorage(){}
+FlightStorage::FlightStorage(const std::string& BASE_PATH){
+   std::filesystem::path BASE{BASE_PATH};
+   initTextFiles(BASE);
+}
+void FlightStorage::initTextFiles(std::filesystem::path& BASE){
+   textFiles = BASE / "text-files";
+}
 
-      std::ifstream txtFlights("../text-files/flights.txt");
-      while(getline(txtFlights, ID)) {
-         flights.push_back(ID);
-      }
-      txtFlights.close();
+std::vector<std::string> FlightStorage::getFlightIDs() {
+   std::string ID;
+   std::vector<std::string> flights = {};
 
-      return flights;
+   std::ifstream txtFlights(textFiles / "flights.txt");
+   while(getline(txtFlights, ID)) {
+      flights.push_back(ID);
    }
+   txtFlights.close();
 
-   std::vector<std::string> FlightStorage::getCities() {
-      std::string city;
-      std::vector<std::string> cities = {};
+   return flights;
+}
 
-      std::ifstream txtCities("../text-files/cities.txt");
-      while(getline(txtCities, city)) {
-         cities.push_back(city);
-      }
-      txtCities.close();
+std::vector<std::string> FlightStorage::getCities() {
+   std::string city;
+   std::vector<std::string> cities = {};
 
-      return cities;
+   std::ifstream txtCities(textFiles / "cities.txt");
+   while(getline(txtCities, city)) {
+      cities.push_back(city);
    }
+   txtCities.close();
 
-   void FlightStorage::saveFlight(Flight& flight) {
-      std::ofstream txtFlights("../text-files/flights.txt", std::ios::app); //?
-      txtFlights << "\n" << flight.ID;
-      txtFlights.close();
+   return cities;
+}
 
-      std::ofstream txtFlightsInfo("../text-files/flightsInfo.txt", std::ios::app); //?
-      txtFlightsInfo << "\n" << flight.ID << "|" 
-      << flight.origin << "," << flight.destination << "|" 
-      << flight.emptySeats << "/" << flight.totalSeats << "|" 
-      << flight.departureTime << "|" << flight.gate << "|" << flight.terminal;
-      txtFlightsInfo.close();
-   }
+void FlightStorage::saveFlight(Flight& flight) {
+   std::ofstream txtFlights(textFiles / "flights.txt", std::ios::app);
+   txtFlights << "\n" << flight.ID;
+   txtFlights.close();
 
-   bool FlightStorage::getFlightInfo(const std::string& ID, Flight& outputFlight) {
-      //confirm ID
-      int index = getIndex(ID, getFlightIDs());
-      if (index == -1)
-         return false;
+   std::ofstream txtFlightsInfo(textFiles / "flightsInfo.txt", std::ios::app);
+   txtFlightsInfo << "\n" << flight.ID << "|" 
+   << flight.origin << "," << flight.destination << "|" 
+   << flight.emptySeats << "/" << flight.totalSeats << "|" 
+   << flight.departureTime << "|" << flight.gate << "|" << flight.terminal;
+   txtFlightsInfo.close();
+}
 
-      //show ID
-      std::string temp;
-      std::ifstream txtFlights("../text-files/flightsInfo.txt");
-      
-      for(int i = 0; i < index; i++) {
-         getline(txtFlights, temp);
-      }
+std::optional<Flight> FlightStorage::getFlightInfo(const std::string& ID) {
+   //confirm ID
+   int index = getIndex(ID, getFlightIDs());
+   if (index == -1)
+      return std::nullopt;
 
-      getline(txtFlights, outputFlight.ID, '|');
-      getline(txtFlights, outputFlight.origin, ',');
-      getline(txtFlights, outputFlight.destination, '|');
-      getline(txtFlights, temp, '/');
-      outputFlight.emptySeats = stoi(temp);
-      getline(txtFlights, temp, '|');
-      outputFlight.totalSeats = stoi(temp);
-      getline(txtFlights, outputFlight.departureTime, '|');
-      getline(txtFlights, temp, '|');
-      outputFlight.gate = temp[0];
+   //show ID
+   Flight f;
+   std::string temp;
+   std::ifstream txtFlights(textFiles / "flightsInfo.txt");
+   
+   for(int i = 0; i < index; i++) {
       getline(txtFlights, temp);
-      outputFlight.terminal = stoi(temp);
-
-      txtFlights.close();
-
-      return true;
    }
+
+   getline(txtFlights, f.ID, '|');
+   getline(txtFlights, f.origin, ',');
+   getline(txtFlights, f.destination, '|');
+   getline(txtFlights, temp, '/');
+   f.emptySeats = stoi(temp);
+   getline(txtFlights, temp, '|');
+   f.totalSeats = stoi(temp);
+   getline(txtFlights, f.departureTime, '|');
+   getline(txtFlights, temp, '|');
+   f.gate = temp[0];
+   getline(txtFlights, temp);
+   f.terminal = stoi(temp);
+
+   txtFlights.close();
+
+   return f;
+}

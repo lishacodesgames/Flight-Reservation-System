@@ -3,29 +3,39 @@
 #include <string>
 #include <fstream>
 
-bool PassengerStorage::getPassengerInfo(std::string name, Passenger& outputP) {
+PassengerStorage::PassengerStorage(){}
+PassengerStorage::PassengerStorage(const std::string& BASE_PATH) {
+   std::filesystem::path BASE{BASE_PATH};
+   initTextPassengers(BASE);
+}
+void PassengerStorage::initTextPassengers(std::filesystem::path& BASE) {
+   TxtPassengers = BASE / "text-files" / "passengers.txt";
+}
+
+std::optional<Passenger> PassengerStorage::getPassengerInfo(std::string inputName) {
    std::string temp;
    bool passengerExists = false;
+   Passenger p;
    
-   std::ifstream passengers("../text-files/passengers.txt");
-   while(getline(passengers, outputP.name, ',')) {
-      if(outputP.name != name) {
+   std::ifstream passengers(TxtPassengers);
+   while(getline(passengers, p.name, ',')) {
+      if(p.name != inputName) {
          getline(passengers, temp);
       }
       else {
          passengerExists = true;
 
          getline(passengers, temp, ',');
-         outputP.age = std::stoi(temp);
-         getline(passengers, outputP.bookedFlight, ',');
-         getline(passengers, outputP.seat);
+         p.age = std::stoi(temp);
+         getline(passengers, p.bookedFlight, ',');
+         getline(passengers, p.seat);
          break;
       }
    }
    passengers.close();
 
    if (!passengerExists)
-      return false;
+      return std::nullopt;
    else
-      return true;
+      return p;
 }

@@ -2,19 +2,16 @@
 #include <iostream> // ik it's bad.
 #include <stdexcept>
 
-/// @brief returns -100 if not number, 100 if out of range
-int parseInt(std::string input) {
+std::pair<std::optional<int>, intErrorCode> parseInt(std::string input) {
    int output;
 
    try {
       output = std::stoi(input);
-   } catch(std::invalid_argument& e) {
-      std::cout << "\nInvalid input.\n";
-      return static_cast<int>(intErrorCode::InvalidArg);
-   } catch(std::out_of_range& e) {
-      std::cout << "\nWhy would you do that?\n";
-      return static_cast<int>(intErrorCode::OutOfRange);
+   } catch(const std::invalid_argument& e) {
+      return {std::nullopt, intErrorCode::InvalidArg};
+   } catch(const std::out_of_range& e) {
+      return {std::nullopt, intErrorCode::OutOfRange};
    }
 
-   return output;
+   return {output, intErrorCode::NoError};
 }
