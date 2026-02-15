@@ -5,7 +5,10 @@
 #### 2 ways to run batch file:
 <ol>
    <li> Normal Mode: Will show the files compiling as they compile </li>
-   <li> Quick Mode: append " quick" after shell script's filename to enable quick mode. This will skip the output of detailed steps and directly compile into AirRouteSystem </li>
+   <li> 
+      Quick Mode: append " quick" after shell script's filename to enable quick mode. 
+      This will skip the output of detailed steps and directly compile into AirRouteSystem 
+   </li>
 </ol>
 
 *Both work just fine. Depends on your patience / trust in your compiler*
@@ -18,4 +21,4 @@ Note: after the main compilation command, there must be 2 directories are argume
 <br><br>
 
 **From build/MacOS Directory** <br>
-` g++ -std=c++17 ../../src/services/*.cpp ../../src/storage/*.cpp ../../src/ui/*.cpp ../../src/utils/*.cpp ../../src/main.cpp -I../../include -o build/MacOS/AirRouteSystem && "./AirRouteSystem" "../.." `
+` g++ -std=c++17 ../../src/services/*.cpp ../../src/storage/*.cpp ../../src/ui/*.cpp ../../src/utils/*.cpp ../../src/main.cpp -I../../include -o AirRouteSystem && "./AirRouteSystem" "../.." `
