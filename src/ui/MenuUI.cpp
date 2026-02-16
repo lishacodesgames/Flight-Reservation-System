@@ -31,6 +31,8 @@ std::pair<bool, int> validMenuInput(std::string input, std::pair<int, int> range
 
       return {false, -1};
    }
+
+   return {true, choice.first.value()};
 }
 
 int MainMenu() {

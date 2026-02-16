@@ -3,6 +3,7 @@
 #include "storage/FlightStorage.h"
 #include <string>
 #include <vector>
+#include <optional>
 
 class BookingService {
    Flight flight;

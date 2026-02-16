@@ -4,6 +4,7 @@
 #include <string>
 #include <fstream>
 #include <filesystem>
+#include <optional>
 
 class FlightStorage {
    static std::filesystem::path textFiles;

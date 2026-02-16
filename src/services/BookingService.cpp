@@ -8,7 +8,8 @@
 
 #include <iostream> //REMOVE 
 void BookingService::bookFlight() {
-   std::string ID = displayBookingOptions();
+   BookingUI ui;
+   std::string ID = ui.displayBookingOptions();
    if(ID == "" || ID == "0")
       std::cout << "FLIGHT WAS NOT BOOKED.";
    else 

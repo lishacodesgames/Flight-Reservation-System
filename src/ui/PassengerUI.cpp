@@ -5,9 +5,11 @@
 #include "storage/PassengerStorage.h"
 #include "storage/FlightStorage.h"
 #include <iostream>
+#include <optional>
 
 bool displayBoardingPass() {
-   std::string temp, name;
+   std::string temp;
+   std::string name;
    PassengerStorage Pstorage;
    FlightStorage Fstorage;
    Passenger p;
@@ -17,15 +19,15 @@ bool displayBoardingPass() {
    std::cout << "Enter name of passenger: ";
    getline(std::cin, name);
 
-   bool passengerExists = Pstorage.getPassengerInfo(name, p);
+   std::optional<Passenger> passenger = Pstorage.getPassengerInfo(name);
 
-   if(!passengerExists) {
+   if(!passenger) {
       printTitle();
       std::cout << "\"" << name << "\" does not have a boarding pass.\n";
       return false;
    }
 
-   Fstorage.getFlightInfo(p.bookedFlight, f);
+   f = Fstorage.getFlightInfo(passenger.value().bookedFlight).value();
    printTitle();
    std::cout 
    << "NAME OF PASSENGER: " << p.name << "\t AGE: " << p.age << "\n"

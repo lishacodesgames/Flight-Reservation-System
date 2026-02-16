@@ -1,7 +1,6 @@
 #pragma once
 #include "core/Passenger.h"
 #include <string>
-#include <fstream>
 #include <filesystem>
 #include <optional>
 
@@ -12,5 +11,5 @@ public:
    PassengerStorage(const std::string& BASE_PATH);
 
    void initTextPassengers(std::filesystem::path& BASE);
-   std::optional<Passenger> getPassengerInfo(std::string name);
+   std::optional<Passenger> getPassengerInfo(std::string inputName);
 };
