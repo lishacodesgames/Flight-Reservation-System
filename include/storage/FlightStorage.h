@@ -14,6 +14,6 @@ public:
 
    std::vector<std::string> getFlightIDs();
    std::vector<std::string> getCities();
-   void saveFlight(Flight& flight);
    std::optional<Flight> getFlightInfo(const std::string& ID);
+   void saveFlight(Flight& flight);
 };

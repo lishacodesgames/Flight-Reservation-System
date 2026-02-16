@@ -1,6 +1,6 @@
-#include "ui/Menu.h"
-#include "ui/FlightView.h"
-#include "ui/PassengerView.h"
+#include "ui/MenuUI.h"
+#include "ui/FlightUI.h"
+#include "ui/PassengerUI.h"
 #include "services/BookingService.h"
 #include "storage/FlightStorage.h"
 #include "storage/PassengerStorage.h"
@@ -39,16 +39,17 @@ int main(int argc, char* argv[]) {
          }
 
          case Choice::ViewFlight: {
-            FlightStorage storage;
             Flight f;
-            bool success, shouldContinue = true;
+            std::optional<Flight> success;
+            bool shouldContinue = true;
             std::string id;
 
             while(shouldContinue) {
                id = getIDforShow();
-               success = storage.getFlightInfo(id, f);
+               success = storage.getFlightInfo(id);
                if(success) {
                   printTitle();
+                  f = success.value();
                   printFlightInfo(f);
                   std::cin.get();
                   shouldContinue = false;

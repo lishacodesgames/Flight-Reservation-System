@@ -1,5 +1,5 @@
-#include "ui/PassengerView.h"
-#include "ui/Menu.h"
+#include "ui/PassengerUI.h"
+#include "ui/MenuUI.h"
 #include "core/Passenger.h"
 #include "core/Flight.h"
 #include "storage/PassengerStorage.h"

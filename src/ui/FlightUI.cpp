@@ -1,5 +1,5 @@
-#include "ui/FlightView.h"
-#include "ui/Menu.h"
+#include "ui/FlightUI.h"
+#include "ui/MenuUI.h"
 #include "core/Flight.h"
 #include "storage/FlightStorage.h"
 #include <vector>
@@ -22,7 +22,7 @@ void displayAllFlights() {
 
    printTitle();
    for(std::string id : flights) {
-      storage.getFlightInfo(id, f);
+      f = storage.getFlightInfo(id).value();
       printFlightInfo(f);
    }
 }

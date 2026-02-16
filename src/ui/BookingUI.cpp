@@ -1,6 +1,6 @@
-#include "ui/BookingView.h"
-#include "ui/FlightView.h"
-#include "ui/Menu.h"
+#include "ui/BookingUI.h"
+#include "ui/FlightUI.h"
+#include "ui/MenuUI.h"
 #include "core/Flight.h"
 #include "utils/ParseUtils.h"
 #include "utils/VectorUtils.h"
@@ -8,7 +8,7 @@
 #include <string>
 #include <vector>
 
-std::optional<std::string> BookingView::getCity(std::string type) {
+std::optional<std::string> BookingUI::getCity(std::string type) {
    std::string city;
    int index;
    bool cityValid, tryAgain;
@@ -31,7 +31,7 @@ std::optional<std::string> BookingView::getCity(std::string type) {
    }
 }
 
-int BookingView::BookingMenu() {
+int BookingUI::BookingMenu() {
    std::string input;
    std::pair <bool, int> choice;
 
@@ -51,7 +51,7 @@ int BookingView::BookingMenu() {
    return choice.second;
 }
 
-int BookingView::OriginChoiceMenu() {
+int BookingUI::OriginChoiceMenu() {
    std::string input;
    std::pair <bool, int> choice;
 
@@ -70,7 +70,7 @@ int BookingView::OriginChoiceMenu() {
    return choice.second;
 }
 
-int BookingView::OneFlightMenu(std::string prompt, std::string flightID) {
+int BookingUI::OneFlightMenu(std::string prompt, std::string flightID) {
    std::string input;
    std::pair <bool, int> choice;
 
@@ -91,7 +91,7 @@ int BookingView::OneFlightMenu(std::string prompt, std::string flightID) {
    return choice.second;
 }
 
-std::string BookingView::displayBookingOptions() {
+std::string BookingUI::displayBookingOptions() {
    BookingChoice choice = static_cast<BookingChoice>(BookingMenu());
 
    switch (choice) {
@@ -250,7 +250,7 @@ std::string BookingView::displayBookingOptions() {
  * @brief 2. if ID exists but not in validFlights, prompt user "book anyways?"
  * @brief 3. if ID doesn't exist, recursive call to re-prompt ID 
  */
-std::string BookingView::getID(std::vector<std::string> validFlights) {
+std::string BookingUI::getID(std::vector<std::string> validFlights) {
    if(validFlights.size() == 0) {
       std::cout << "Something went wrong.\n";
       std::cin.get();
