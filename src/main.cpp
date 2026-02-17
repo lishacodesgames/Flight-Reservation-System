@@ -13,13 +13,18 @@
 enum class Choice {Exit, Book, ViewFlight, ViewBoardingPass, ViewAllFlights};
 
 int main(int argc, char* argv[]) {
-   if(argc < 2) {
-      std::cout << "\nBase path not provided!\n";
-      return 1;
-   }
-   std::string BASE_PATH = argv[1];
-   FlightStorage storage(BASE_PATH);
-   PassengerStorage storage(BASE_PATH);
+
+   #ifdef ROOT_DIR
+      std::string BASE_PATH = ROOT_DIR;
+   #else // Fallback if built without CMake
+      if(argc < 2) {
+         std::cout << "\nBase path not provided!\n";
+         return 1;
+      }
+      std::string BASE_PATH = argv[1];
+   #endif
+   FlightStorage Fstorage(BASE_PATH);
+   PassengerStorage Pstorage(BASE_PATH);
    BookingService booker;
 
    std::srand(time(0));
@@ -46,7 +51,7 @@ int main(int argc, char* argv[]) {
 
             while(shouldContinue) {
                id = getIDforShow();
-               success = storage.getFlightInfo(id);
+               success = Fstorage.getFlightInfo(id);
                if(success) {
                   printTitle();
                   f = success.value();

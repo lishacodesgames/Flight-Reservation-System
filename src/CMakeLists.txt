@@ -25,3 +25,8 @@ target_link_libraries(AirRouteSystem PRIVATE
    module_ui
    module_utils
 )
+
+# Second argument as location of root repo (for this program)
+target_compile_definitions(AirRouteSystem PRIVATE 
+    ROOT_DIR="${CMAKE_SOURCE_DIR}"
+)

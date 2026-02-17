@@ -67,6 +67,7 @@ int BookingUI::OriginChoiceMenu() {
       choice = validMenuInput(input, {0, 2});
    } while (!choice.first);
 
+   if(choice.second == 2) return 3; // BookingChoice::byDestination = 3
    return choice.second;
 }
 

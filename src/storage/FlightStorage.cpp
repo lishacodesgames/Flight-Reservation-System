@@ -4,15 +4,21 @@
 #include <string>
 #include <fstream>
 #include <optional>
+#include <filesystem>
+
+static std::filesystem::path repoPath;
 
 FlightStorage::FlightStorage(){}
 FlightStorage::FlightStorage(const std::string& BASE_PATH){
    std::filesystem::path BASE{BASE_PATH};
+   repoPath = BASE;
    initTextFiles(BASE);
 }
 void FlightStorage::initTextFiles(std::filesystem::path& BASE){
    textFiles = BASE / "text-files";
 }
+
+std::filesystem::path FlightStorage::textFiles = repoPath / "text-files";
 
 /// @return vector of string IDs
 std::vector<std::string> FlightStorage::getFlightIDs() {

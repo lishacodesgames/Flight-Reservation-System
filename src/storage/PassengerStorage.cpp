@@ -3,14 +3,19 @@
 #include <string>
 #include <fstream>
 
+static std::filesystem::path repoPath;
+
 PassengerStorage::PassengerStorage(){}
 PassengerStorage::PassengerStorage(const std::string& BASE_PATH) {
    std::filesystem::path BASE{BASE_PATH};
+   repoPath = BASE;
    initTextPassengers(BASE);
 }
 void PassengerStorage::initTextPassengers(std::filesystem::path& BASE) {
    TxtPassengers = BASE / "text-files" / "passengers.txt";
 }
+
+std::filesystem::path PassengerStorage::TxtPassengers = repoPath / "text-files" / "passengers.txt";
 
 std::optional<Passenger> PassengerStorage::getPassengerInfo(std::string inputName) {
    std::string temp;
