@@ -86,7 +86,7 @@ bool promptTryAgain() {
 
 bool promptTryAgain(std::string prompt) {
    std::string ans;
-   std::cout << prompt << "Try again? (y/n) ";
+   std::cout << prompt << "\nTry again? (y/n) ";
    getline(std::cin, ans);
 
    for(char& ch : ans) {

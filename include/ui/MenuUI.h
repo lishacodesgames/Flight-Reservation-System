@@ -7,7 +7,7 @@ void printTitle();
 
 /// @param range checks if input ∈ [range.first, range.second]
 /// @retval bool: IF value is valid
-/// @retval -1 IF not valid, parsed integer value if valid
+/// @retval int: -1 IF not valid, parsed integer value if valid
 std::pair<bool, int> validMenuInput(std::string input, std::pair<int, int> range);
 
 int MainMenu();

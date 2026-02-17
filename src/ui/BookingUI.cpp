@@ -10,7 +10,6 @@
 
 std::optional<std::string> BookingUI::getCity(std::string type) {
    std::string city;
-   int index;
    bool cityValid, tryAgain;
 
    while(true) {
@@ -23,7 +22,7 @@ std::optional<std::string> BookingUI::getCity(std::string type) {
       if(cityValid)
          return city;
       else {
-         tryAgain = promptTryAgain(city + " does not exist.\n");
+         tryAgain = promptTryAgain(city + " does not exist.");
          if(!tryAgain)
             return std::nullopt;
          else continue;
@@ -55,6 +54,7 @@ int BookingUI::OriginChoiceMenu() {
    std::string input;
    std::pair <bool, int> choice;
 
+   printTitle();
    do {
       std::cout << "===============================\n";
       std::cout << "[0] Go back\n";
